@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- مكتبات Firebase المضافة -->
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 <style>
@@ -15,6 +14,7 @@
   --gold:#ffd700;--silver:#c0c0c0;--bronze:#cd7f32;
   --future:#ff4d6d;--regular:#60a5fa;--accent:#3b82f6;
   --text:#e8edf5;--muted:#4a5a7a;--green:#22c55e;--red:#ef4444;
+  --orange:#f59e0b;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
@@ -37,15 +37,19 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 
 /* APP */
 #app{display:none;}
-.top-bar{background:linear-gradient(180deg,#0d1520 0%,transparent 100%);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.top-bar{background:linear-gradient(180deg,#0d1520 0%,transparent 100%);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;}
 .logo{display:flex;align-items:center;gap:10px;}
 .logo .ic{font-size:24px;}
 .logo h1{font-size:18px;font-weight:900;}
 .abadge{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;}
-.top-right{display:flex;align-items:center;gap:8px;}
+.top-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .hbtn{background:transparent;border:1px solid var(--border);padding:5px 14px;border-radius:20px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;}
 .hbtn:hover{border-color:var(--accent);color:var(--accent);}
-.lang-btn { background: rgba(255,215,0,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 5px 14px; border-radius: 20px; font-weight: 700; cursor: pointer;}
+.lang-btn { background: rgba(255,215,0,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 5px 14px; border-radius: 20px; font-weight: 700; cursor:pointer;}
+.publish-btn { background: linear-gradient(135deg,#22c55e,#16a34a)!important; border: none!important; color: white!important; font-weight: 900!important; padding: 8px 20px!important; border-radius: 12px!important; font-size: 14px!important; cursor: pointer; transition: all .2s; box-shadow: 0 0 20px rgba(34,197,94,.3); }
+.publish-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(34,197,94,.5); }
+.settings-btn { background: rgba(249,115,22,.1)!important; border: 1px solid var(--orange)!important; color: var(--orange)!important; font-weight: 700!important; }
+.settings-btn:hover { background: rgba(249,115,22,.2)!important; }
 
 .date-row{padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:var(--panel);}
 .dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;}
@@ -111,6 +115,116 @@ td{padding:10px 14px;white-space:nowrap;}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* === نافذة الإعدادات === */
+.settings-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(6px);
+  display:none; align-items:center; justify-content:center; z-index:9999; padding:20px;
+}
+.settings-overlay.open { display:flex; }
+.settings-panel {
+  background: var(--panel); border:1px solid var(--border); border-radius:20px;
+  width:100%; max-width:680px; max-height:85vh; overflow-y:auto; padding:28px;
+  box-shadow: 0 25px 80px rgba(0,0,0,.6);
+}
+.settings-panel h2 {
+  font-size:22px; font-weight:900; margin-bottom:6px; display:flex; align-items:center; gap:10px;
+}
+.settings-panel .sub { color:var(--muted); font-size:13px; margin-bottom:22px; }
+.settings-section { margin-bottom:22px; }
+.settings-section h3 {
+  font-size:14px; font-weight:900; color:var(--orange); margin-bottom:10px;
+  padding-bottom:6px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px;
+}
+.toggle-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:8px; }
+.toggle-item {
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:10px 14px;
+  transition: all .15s; cursor:pointer; user-select:none;
+}
+.toggle-item:hover { border-color:var(--accent); }
+.toggle-item.off { opacity:.45; border-color:var(--red); background:rgba(239,68,68,.04); }
+.toggle-item .tl { font-size:13px; font-weight:700; }
+.toggle-item .ts { font-size:10px; color:var(--muted); }
+.toggle-switch {
+  width:40px; height:22px; border-radius:11px; background:var(--border);
+  position:relative; transition: background .2s; flex-shrink:0;
+}
+.toggle-switch::after {
+  content:''; position:absolute; top:3px; left:3px; width:16px; height:16px;
+  border-radius:50%; background:white; transition: transform .2s;
+}
+.toggle-item:not(.off) .toggle-switch { background:var(--green); }
+.toggle-item:not(.off) .toggle-switch::after { transform:translateX(18px); }
+html[dir="rtl"] .toggle-switch::after { left:auto; right:3px; }
+html[dir="rtl"] .toggle-item:not(.off) .toggle-switch::after { transform:translateX(-18px); }
+
+/* قائمة الأسماء المخفية */
+.hidden-names-list {
+  max-height:160px; overflow-y:auto; background:var(--panel2); border:1px solid var(--border);
+  border-radius:10px; padding:8px; margin-top:8px;
+}
+.hidden-name-chip {
+  display:inline-flex; align-items:center; gap:6px; background:rgba(239,68,68,.1);
+  border:1px solid rgba(239,68,68,.3); color:var(--red); padding:4px 12px;
+  border-radius:20px; font-size:12px; font-weight:700; margin:3px;
+}
+.hidden-name-chip button {
+  background:none; border:none; color:var(--red); cursor:pointer; font-size:14px; font-weight:900; line-height:1;
+}
+.name-search-input {
+  width:100%; background:var(--panel2); border:1px solid var(--border); border-radius:10px;
+  padding:10px 14px; color:var(--text); font-size:13px; margin-bottom:8px; outline:none;
+  font-family:inherit;
+}
+.name-search-input:focus { border-color:var(--accent); }
+.name-search-results {
+  max-height:150px; overflow-y:auto; background:var(--panel2); border:1px solid var(--border);
+  border-radius:10px; padding:4px; display:none;
+}
+.name-search-results.show { display:block; }
+.name-result-item {
+  padding:8px 12px; border-radius:8px; font-size:13px; cursor:pointer; transition:background .1s;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.name-result-item:hover { background:rgba(59,130,246,.1); }
+.name-result-item .nr-name { font-weight:700; }
+.name-result-item .nr-cat { font-size:11px; color:var(--muted); }
+
+.settings-actions {
+  display:flex; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border);
+}
+.btn-save-settings {
+  flex:1; background:linear-gradient(135deg,var(--green),#16a34a); border:none;
+  padding:12px; border-radius:12px; color:white; font-size:15px; font-weight:900;
+  cursor:pointer; transition:all .2s; font-family:inherit;
+}
+.btn-save-settings:hover { transform:scale(1.02); box-shadow:0 0 20px rgba(34,197,94,.3); }
+.btn-reset-settings {
+  background:transparent; border:1px solid var(--border); padding:12px 20px;
+  border-radius:12px; color:var(--muted); font-size:14px; font-weight:700;
+  cursor:pointer; transition:all .15s; font-family:inherit;
+}
+.btn-reset-settings:hover { border-color:var(--red); color:var(--red); }
+.btn-close-settings {
+  position:absolute; top:16px; left:16px; background:none; border:none;
+  color:var(--muted); font-size:24px; cursor:pointer; transition:color .15s;
+  line-height:1;
+}
+html[dir="rtl"] .btn-close-settings { left:auto; right:16px; }
+.btn-close-settings:hover { color:var(--red); }
+
+.settings-panel { position:relative; }
+
+/* إشعار التوست */
+.toast {
+  position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px);
+  background:var(--green); color:white; padding:12px 28px; border-radius:14px;
+  font-weight:900; font-size:14px; z-index:99999; transition:transform .4s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 10px 40px rgba(34,197,94,.4); font-family:inherit;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+.toast.error { background:var(--red); box-shadow:0 10px 40px rgba(239,68,68,.4); }
 </style>
 </head>
 <body>
@@ -149,8 +263,8 @@ td{padding:10px 14px;white-space:nowrap;}
       <span class="abadge t-admin-lbl">🔐 إدارة</span>
     </div>
     <div class="top-right">
-      <!-- زر النشر المضاف -->
-      <button id="publishBtn" class="hbtn" onclick="publishResults()" style="display:none; color:var(--green); border-color:var(--green); font-weight:bold;">نشر النتائج (Publish) 🚀</button>
+      <button id="publishBtn" class="hbtn publish-btn" onclick="publishResults()" style="display:none;">نشر النتائج 🚀</button>
+      <button class="hbtn settings-btn" onclick="openSettings()" id="settingsBtn" style="display:none;">⚙️ إعدادات العرض</button>
       <button class="lang-btn" onclick="toggleLang()">🌐 EN / AR</button>
       <button class="hbtn t-btn-new" onclick="changeFile()">↑ ملف جديد</button>
     </div>
@@ -161,13 +275,13 @@ td{padding:10px 14px;white-space:nowrap;}
     <div id="datePills"></div>
   </div>
 
-  <div class="formula-strip">
+  <div class="formula-strip" id="formulaStrip">
     <span class="ftitle t-calc">🔻 الخصومات:</span>
     <span class="neg">Miss-sort: -50</span>
     <span class="neg">FSAF: -10</span>
   </div>
 
-  <div class="tabs">
+  <div class="tabs" id="tabsRow">
     <div class="tab active t-tab-all" onclick="switchTab('all')">📋 جميع المتسابقين</div>
     <div class="tab t-tab-future" onclick="switchTab('future')">🌟 فائزين فيوتشر</div>
   </div>
@@ -176,8 +290,47 @@ td{padding:10px 14px;white-space:nowrap;}
   <div class="page" id="pageFuture"></div>
 </div>
 
+<!-- نافذة الإعدادات -->
+<div class="settings-overlay" id="settingsOverlay" onclick="if(event.target===this)closeSettings()">
+  <div class="settings-panel">
+    <button class="btn-close-settings" onclick="closeSettings()">✕</button>
+    <h2>⚙️ إعدادات العرض</h2>
+    <p class="sub">تحكم بما يراه المشاهدون — التغييرات تُطبق بعد النشر</p>
+
+    <!-- إخفاء عناصر الصفحة -->
+    <div class="settings-section">
+      <h3>🔲 إخفاء عناصر الصفحة</h3>
+      <div class="toggle-grid" id="pageToggles"></div>
+    </div>
+
+    <!-- إخفاء أعمدة الجدول -->
+    <div class="settings-section">
+      <h3>📋 إخفاء أعمدة الجدول</h3>
+      <div class="toggle-grid" id="colToggles"></div>
+    </div>
+
+    <!-- إخفاء أسماء معينة -->
+    <div class="settings-section">
+      <h3>👤 إخفاء أسماء معينة</h3>
+      <input class="name-search-input" id="nameSearchInput" placeholder="ابحث عن اسم لإخفائه..." oninput="searchNames(this.value)">
+      <div class="name-search-results" id="nameSearchResults"></div>
+      <div class="hidden-names-list" id="hiddenNamesList">
+        <p style="color:var(--muted);font-size:12px;padding:8px;text-align:center;" id="noHiddenNames">لا توجد أسماء مخفية</p>
+      </div>
+    </div>
+
+    <div class="settings-actions">
+      <button class="btn-save-settings" onclick="saveSettings()">💾 حفظ ونشر الإعدادات</button>
+      <button class="btn-reset-settings" onclick="resetSettings()">🔄 إعادة تعيين</button>
+    </div>
+  </div>
+</div>
+
+<!-- إشعار -->
+<div class="toast" id="toast"></div>
+
 <script>
-// إعدادات Firebase المضافة
+// إعدادات Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD0Mnet_aFBNAhidY2cFJ27d4tNTM2F8A8",
   authDomain: "peak-ce9b0.firebaseapp.com",
@@ -190,53 +343,92 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// --- I18N DICTIONARY ---
+// --- I18N ---
 const DICT = {
   ar: {
     title: 'لوحة <span style="color:var(--gold)">المسابقات</span>',
-    adminLbl: '🔐 إدارة',
-    sub: 'ارفع ملف الإكسل اليومي — البيانات تُحفظ وتظهر للمشاهدين تلقائياً',
+    adminLbl: '🔐 إدارة', sub: 'ارفع ملف الإكسل اليومي — البيانات تُحفظ وتظهر للمشاهدين تلقائياً',
     upTitle: '📊 ارفع ملف الإكسل',
     upDesc: 'يجب أن يحتوي على أعمدة:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg',
-    btnUp: 'اختر ملف',
-    linkLbl: '🔗 رابط المشاهدة (شاركه مع الجميع)',
-    btnCopy: 'نسخ',
-    btnNew: '↑ ملف جديد',
-    calc: '🔻 الخصومات:',
-    tabAll: '📋 جميع المتسابقين',
-    tabFuture: '🌟 فائزين فيوتشر',
-    all: 'الكل',
-    copied: '✅ تم النسخ',
-    empty: 'لا توجد بيانات',
-    pt: 'نقطة',
-    noteAll: '🏅 أعلى 3 مراكز',
-    noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
-    // Table Headers
+    btnUp: 'اختر ملف', linkLbl: '🔗 رابط المشاهدة (شاركه مع الجميع)',
+    btnCopy: 'نسخ', btnNew: '↑ ملف جديد', calc: '🔻 الخصومات:',
+    tabAll: '📋 جميع المتسابقين', tabFuture: '🌟 فائزين فيوتشر',
+    all: 'الكل', copied: '✅ تم النسخ', empty: 'لا توجد بيانات', pt: 'نقطة',
+    noteAll: '🏅 أعلى 3 مراكز', noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
     thRank: '#', thName: 'الاسم', thLogin: 'Login', thLevel: 'Level',
-    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'النقاط'
+    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'النقاط',
+    // إعدادات
+    settingsTitle: '⚙️ إعدادات العرض',
+    settingsSub: 'تحكم بما يراه المشاهدون — التغييرات تُطبق بعد النشر',
+    secPage: '🔲 إخفاء عناصر الصفحة',
+    secCols: '📋 إخفاء أعمدة الجدول',
+    secNames: '👤 إخفاء أسماء معينة',
+    namePlaceholder: 'ابحث عن اسم لإخفائه...',
+    noHidden: 'لا توجد أسماء مخفية',
+    saveBtn: '💾 حفظ ونشر الإعدادات',
+    resetBtn: '🔄 إعادة تعيين',
+    savedMsg: 'تم حفظ الإعدادات ونشرها بنجاح!',
+    publishedMsg: 'تم نشر النتائج للقروب بنجاح! 🎉',
+    publishingMsg: 'جاري النشر...',
+    publishBtnText: 'نشر النتائج 🚀',
+    settingsBtnText: '⚙️ إعدادات العرض',
+    // عناصر الصفحة
+    elPodium: 'المنصة (البوديوم)',
+    elRanks: 'عمود المراكز (#)',
+    elScores: 'عمود النقاط',
+    elFormula: 'شريط الخصومات',
+    elTabs: 'تبويب الفائزين',
+    // أعمدة
+    colRank: 'المراكز (#)',
+    colName: 'الاسم',
+    colLogin: 'Login',
+    colLevel: 'Level',
+    colMiss: 'Miss-sort',
+    colFsaf: 'FSAF',
+    colPph: 'PPH',
+    colTotal: 'Total Pkg',
+    colScore: 'النقاط'
   },
   en: {
     title: 'Competitions <span style="color:var(--gold)">Dashboard</span>',
-    adminLbl: '🔐 Admin',
-    sub: 'Upload daily Excel file — Data is saved & synced to viewers automatically',
+    adminLbl: '🔐 Admin', sub: 'Upload daily Excel file — Data is saved & synced to viewers automatically',
     upTitle: '📊 Upload Excel',
     upDesc: 'Must contain columns:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg',
-    btnUp: 'Select File',
-    linkLbl: '🔗 Viewer Link (Share with everyone)',
-    btnCopy: 'Copy',
-    btnNew: '↑ New File',
-    calc: '🔻 Deductions:',
-    tabAll: '📋 All Contestants',
-    tabFuture: '🌟 Future Winners',
-    all: 'All',
-    copied: '✅ Copied',
-    empty: 'No Data Found',
-    pt: 'pt',
-    noteAll: '🏅 Top 3 Positions',
-    noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
-    // Table Headers
+    btnUp: 'Select File', linkLbl: '🔗 Viewer Link (Share with everyone)',
+    btnCopy: 'Copy', btnNew: '↑ New File', calc: '🔻 Deductions:',
+    tabAll: '📋 All Contestants', tabFuture: '🌟 Future Winners',
+    all: 'All', copied: '✅ Copied', empty: 'No Data Found', pt: 'pt',
+    noteAll: '🏅 Top 3 Positions', noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
     thRank: '#', thName: 'Name', thLogin: 'Login', thLevel: 'Level',
-    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'Score'
+    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'Score',
+    settingsTitle: '⚙️ Display Settings',
+    settingsSub: 'Control what viewers see — Changes apply after publishing',
+    secPage: '🔲 Hide Page Elements',
+    secCols: '📋 Hide Table Columns',
+    secNames: '👤 Hide Specific Names',
+    namePlaceholder: 'Search a name to hide...',
+    noHidden: 'No hidden names',
+    saveBtn: '💾 Save & Publish Settings',
+    resetBtn: '🔄 Reset',
+    savedMsg: 'Settings saved & published successfully!',
+    publishedMsg: 'Results published successfully! 🎉',
+    publishingMsg: 'Publishing...',
+    publishBtnText: 'Publish Results 🚀',
+    settingsBtnText: '⚙️ Display Settings',
+    elPodium: 'Podium',
+    elRanks: 'Rank Column (#)',
+    elScores: 'Score Column',
+    elFormula: 'Deductions Bar',
+    elTabs: 'Winners Tab',
+    colRank: 'Rank (#)',
+    colName: 'Name',
+    colLogin: 'Login',
+    colLevel: 'Level',
+    colMiss: 'Miss-sort',
+    colFsaf: 'FSAF',
+    colPph: 'PPH',
+    colTotal: 'Total Pkg',
+    colScore: 'Score'
   }
 };
 
@@ -245,7 +437,7 @@ function toggleLang() {
   lang = lang === 'ar' ? 'en' : 'ar';
   localStorage.setItem('compLang', lang);
   applyLang();
-  if(allData.length) { buildDatePills(); render(); }
+  if(allData.length) { buildDatePills(); render(); buildSettingsUI(); }
 }
 
 function applyLang() {
@@ -264,6 +456,18 @@ function applyLang() {
   document.querySelector('.t-calc').innerText=d.calc;
   document.querySelector('.t-tab-all').innerText=d.tabAll;
   document.querySelector('.t-tab-future').innerText=d.tabFuture;
+  document.getElementById('publishBtn').innerText = d.publishBtnText;
+  document.getElementById('settingsBtn').innerText = d.settingsBtnText;
+  // إعدادات
+  document.querySelector('.settings-panel h2').innerHTML = d.settingsTitle;
+  document.querySelector('.settings-panel .sub').innerText = d.settingsSub;
+  document.querySelectorAll('.settings-section h3')[0].innerText = d.secPage;
+  document.querySelectorAll('.settings-section h3')[1].innerText = d.secCols;
+  document.querySelectorAll('.settings-section h3')[2].innerText = d.secNames;
+  document.getElementById('nameSearchInput').placeholder = d.namePlaceholder;
+  document.getElementById('noHiddenNames').innerText = d.noHidden;
+  document.querySelector('.btn-save-settings').innerText = d.saveBtn;
+  document.querySelector('.btn-reset-settings').innerText = d.resetBtn;
 }
 applyLang();
 
@@ -276,6 +480,183 @@ const CATS = [
 
 let allData = [], selectedDate = null;
 
+// --- إعدادات العرض ---
+// المفاتيح: hidePodium, hideRanks, hideScores, hideFormula, hideFutureTab,
+//           hideCol_rank, hideCol_name, hideCol_login, hideCol_level, hideCol_misssort, hideCol_fsaf, hideCol_pph, hideCol_totalpkg, hideCol_score
+//           hiddenNames: []
+let displaySettings = {
+  hidePodium: false,
+  hideRanks: false,
+  hideScores: false,
+  hideFormula: false,
+  hideFutureTab: false,
+  hideCol_rank: false,
+  hideCol_name: false,
+  hideCol_login: false,
+  hideCol_level: false,
+  hideCol_misssort: false,
+  hideCol_fsaf: false,
+  hideCol_pph: false,
+  hideCol_totalpkg: false,
+  hideCol_score: false,
+  hiddenNames: []
+};
+
+// مفاتيح عناصر الصفحة مع التسميات
+const PAGE_ELEMENTS = [
+  { key: 'hidePodium', labelKey: 'elPodium' },
+  { key: 'hideRanks', labelKey: 'elRanks' },
+  { key: 'hideScores', labelKey: 'elScores' },
+  { key: 'hideFormula', labelKey: 'elFormula' },
+  { key: 'hideFutureTab', labelKey: 'elTabs' },
+];
+
+// مفاتيح الأعمدة مع التسميات
+const COL_ELEMENTS = [
+  { key: 'hideCol_rank', labelKey: 'colRank', dataKey: 'rank' },
+  { key: 'hideCol_name', labelKey: 'colName', dataKey: 'name' },
+  { key: 'hideCol_login', labelKey: 'colLogin', dataKey: 'login' },
+  { key: 'hideCol_level', labelKey: 'colLevel', dataKey: 'level' },
+  { key: 'hideCol_misssort', labelKey: 'colMiss', dataKey: 'misssort' },
+  { key: 'hideCol_fsaf', labelKey: 'colFsaf', dataKey: 'fsaf' },
+  { key: 'hideCol_pph', labelKey: 'colPph', dataKey: 'pph' },
+  { key: 'hideCol_totalpkg', labelKey: 'colTotal', dataKey: 'totalpkg' },
+  { key: 'hideCol_score', labelKey: 'colScore', dataKey: 'score' },
+];
+
+function buildSettingsUI() {
+  const d = DICT[lang];
+
+  // بناء تبديلات عناصر الصفحة
+  const pageContainer = document.getElementById('pageToggles');
+  pageContainer.innerHTML = '';
+  PAGE_ELEMENTS.forEach(el => {
+    const isOff = displaySettings[el.key];
+    const div = document.createElement('div');
+    div.className = 'toggle-item' + (isOff ? ' off' : '');
+    div.innerHTML = `<div><div class="tl">${d[el.labelKey]}</div><div class="ts">${isOff ? 'مخفي' : 'ظاهر'}</div></div><div class="toggle-switch"></div>`;
+    div.onclick = () => {
+      displaySettings[el.key] = !displaySettings[el.key];
+      div.classList.toggle('off');
+      div.querySelector('.ts').textContent = displaySettings[el.key] ? (lang==='ar'?'مخفي':'Hidden') : (lang==='ar'?'ظاهر':'Visible');
+    };
+    pageContainer.appendChild(div);
+  });
+
+  // بناء تبديلات الأعمدة
+  const colContainer = document.getElementById('colToggles');
+  colContainer.innerHTML = '';
+  COL_ELEMENTS.forEach(el => {
+    const isOff = displaySettings[el.key];
+    const div = document.createElement('div');
+    div.className = 'toggle-item' + (isOff ? ' off' : '');
+    div.innerHTML = `<div><div class="tl">${d[el.labelKey]}</div><div class="ts">${isOff ? 'مخفي' : 'ظاهر'}</div></div><div class="toggle-switch"></div>`;
+    div.onclick = () => {
+      displaySettings[el.key] = !displaySettings[el.key];
+      div.classList.toggle('off');
+      div.querySelector('.ts').textContent = displaySettings[el.key] ? (lang==='ar'?'مخفي':'Hidden') : (lang==='ar'?'ظاهر':'Visible');
+    };
+    colContainer.appendChild(div);
+  });
+
+  // بناء قائمة الأسماء المخفية
+  renderHiddenNames();
+}
+
+function renderHiddenNames() {
+  const list = document.getElementById('hiddenNamesList');
+  const noMsg = document.getElementById('noHiddenNames');
+  // إزالة الشيبس القديمة
+  list.querySelectorAll('.hidden-name-chip').forEach(c => c.remove());
+  if (displaySettings.hiddenNames.length === 0) {
+    noMsg.style.display = 'block';
+  } else {
+    noMsg.style.display = 'none';
+    displaySettings.hiddenNames.forEach((name, idx) => {
+      const chip = document.createElement('span');
+      chip.className = 'hidden-name-chip';
+      chip.innerHTML = `${name} <button onclick="removeHiddenName(${idx})">✕</button>`;
+      list.appendChild(chip);
+    });
+  }
+}
+
+function searchNames(query) {
+  const results = document.getElementById('nameSearchResults');
+  if (!query.trim()) { results.classList.remove('show'); results.innerHTML=''; return; }
+  const q = query.toLowerCase();
+  const found = allData.filter(r => r.name.toLowerCase().includes(q) && !displaySettings.hiddenNames.includes(r.name));
+  // إزالة التكرارات
+  const unique = [...new Map(found.map(r => [r.name, r])).values()].slice(0, 10);
+  if (!unique.length) { results.classList.remove('show'); results.innerHTML=''; return; }
+  results.innerHTML = unique.map(r => {
+    const catInfo = CATS.find(c => c.key === r.cat);
+    return `<div class="name-result-item" onclick="addHiddenName('${r.name.replace(/'/g,"\\'")}')">
+      <span class="nr-name">${r.name}</span>
+      <span class="nr-cat" style="color:${catInfo?catInfo.color:'var(--muted)'}">${catInfo?catInfo.label:r.cat}</span>
+    </div>`;
+  }).join('');
+  results.classList.add('show');
+}
+
+function addHiddenName(name) {
+  if (!displaySettings.hiddenNames.includes(name)) {
+    displaySettings.hiddenNames.push(name);
+    renderHiddenNames();
+    document.getElementById('nameSearchInput').value = '';
+    document.getElementById('nameSearchResults').classList.remove('show');
+    document.getElementById('nameSearchResults').innerHTML = '';
+  }
+}
+
+function removeHiddenName(idx) {
+  displaySettings.hiddenNames.splice(idx, 1);
+  renderHiddenNames();
+}
+
+function openSettings() {
+  document.getElementById('settingsOverlay').classList.add('open');
+  buildSettingsUI();
+}
+
+function closeSettings() {
+  document.getElementById('settingsOverlay').classList.remove('open');
+}
+
+function saveSettings() {
+  const btn = document.querySelector('.btn-save-settings');
+  btn.textContent = '...';
+  db.ref('displaySettings').set(displaySettings).then(() => {
+    showToast(DICT[lang].savedMsg, false);
+    btn.textContent = DICT[lang].saveBtn;
+    closeSettings();
+  }).catch(e => {
+    showToast('Error: ' + e.message, true);
+    btn.textContent = DICT[lang].saveBtn;
+  });
+}
+
+function resetSettings() {
+  displaySettings = {
+    hidePodium: false, hideRanks: false, hideScores: false,
+    hideFormula: false, hideFutureTab: false,
+    hideCol_rank: false, hideCol_name: false, hideCol_login: false,
+    hideCol_level: false, hideCol_misssort: false, hideCol_fsaf: false,
+    hideCol_pph: false, hideCol_totalpkg: false, hideCol_score: false,
+    hiddenNames: []
+  };
+  buildSettingsUI();
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  requestAnimationFrame(() => t.classList.add('show'));
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// === روابط ===
 function getViewLink() { return location.href.replace('admin.html','viewer.html'); }
 document.getElementById('viewLinkInput').value = getViewLink();
 function copyLink() {
@@ -286,6 +667,7 @@ function copyLink() {
   });
 }
 
+// === رفع الملف ===
 const uploadBox = document.getElementById('uploadBox');
 uploadBox.addEventListener('dragover',e=>{e.preventDefault();uploadBox.classList.add('drag');});
 uploadBox.addEventListener('dragleave',()=>uploadBox.classList.remove('drag'));
@@ -334,24 +716,38 @@ function processFile(file) {
     buildDatePills(); render();
     document.getElementById('uploadScreen').style.display='none';
     document.getElementById('app').style.display='block';
-    
-    // إظهار زر النشر بعد الرفع بنجاح
     document.getElementById('publishBtn').style.display = 'inline-block';
+    document.getElementById('settingsBtn').style.display = 'inline-block';
   };
   reader.readAsArrayBuffer(file);
 }
 
-// دالة النشر المضافة
+// نشر النتائج + الإعدادات معاً
 function publishResults() {
-    const btn = document.getElementById('publishBtn');
-    btn.textContent = "جاري النشر...";
-    db.ref('competitionsData').set(allData).then(() => {
-        alert(lang === 'ar' ? "تم نشر النتائج للقروب بنجاح! 🎉" : "Published successfully! 🎉");
-        btn.textContent = "نشر النتائج (Publish) 🚀";
-    }).catch(e => {
-        alert("Error: " + e.message);
-        btn.textContent = "نشر النتائج (Publish) 🚀";
-    });
+  const btn = document.getElementById('publishBtn');
+  btn.textContent = DICT[lang].publishingMsg;
+  btn.style.opacity = '.6';
+  btn.style.pointerEvents = 'none';
+
+  // نشر البيانات والإعدادات معاً
+  const updates = {};
+  updates['competitionsData'] = allData;
+  updates['displaySettings'] = displaySettings;
+  // علامة النشر
+  updates['published'] = true;
+  updates['publishTimestamp'] = firebase.database.ServerValue.TIMESTAMP;
+
+  db.ref().update(updates).then(() => {
+    showToast(DICT[lang].publishedMsg, false);
+    btn.textContent = DICT[lang].publishBtnText;
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }).catch(e => {
+    showToast('Error: ' + e.message, true);
+    btn.textContent = DICT[lang].publishBtnText;
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  });
 }
 
 function buildDatePills(){
@@ -381,12 +777,22 @@ function render(){
   renderFuture(fd);
 }
 
+// دالة مساعدة: هل الاسم مخفي؟
+function isNameHidden(name) {
+  return displaySettings.hiddenNames.includes(name);
+}
+
+// دالة مساعدة: هل العمود مخفي؟
+function isColHidden(dataKey) {
+  return displaySettings['hideCol_' + dataKey] || false;
+}
+
 function renderAll(data){
   const page = document.getElementById('pageAll'); page.innerHTML='';
   if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
 
   CATS.forEach(cat => {
-    let rows = data.filter(r => r.cat === cat.key).sort((a,b) => b.score - a.score);
+    let rows = data.filter(r => r.cat === cat.key && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
     if(!rows.length) return;
     
     const top3 = rows.slice(0,3);
@@ -395,34 +801,55 @@ function renderAll(data){
       <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
       <span class="wnote">${DICT[lang].noteAll}</span></div>`;
     
-    sec.appendChild(buildPodium(top3, cat));
+    // المنصة - يمكن إخفاؤها
+    if (!displaySettings.hidePodium) {
+      sec.appendChild(buildPodium(top3, cat));
+    }
+
+    // بناء الأعمدة ديناميكياً حسب الإعدادات
+    const colDefs = [
+      { key:'rank', header: DICT[lang].thRank },
+      { key:'name', header: DICT[lang].thName },
+      { key:'login', header: DICT[lang].thLogin },
+      { key:'level', header: DICT[lang].thLevel },
+      { key:'misssort', header: DICT[lang].thMiss },
+      { key:'fsaf', header: DICT[lang].thFsaf },
+      { key:'pph', header: DICT[lang].thPph },
+      { key:'totalpkg', header: DICT[lang].thTotal },
+      { key:'score', header: DICT[lang].thScore },
+    ];
+
+    // إخفاء المراكز والنقاط من الجدول أيضاً
+    const visibleCols = colDefs.filter(c => !isColHidden(c.key));
 
     const wrap = document.createElement('div'); wrap.className = 'all-table-wrap';
     wrap.innerHTML = `<table>
-      <thead><tr>
-        <th>${DICT[lang].thRank}</th>
-        <th>${DICT[lang].thName}</th>
-        <th>${DICT[lang].thLogin}</th>
-        <th>${DICT[lang].thLevel}</th>
-        <th>${DICT[lang].thMiss}</th>
-        <th>${DICT[lang].thFsaf}</th>
-        <th>${DICT[lang].thPph}</th>
-        <th>${DICT[lang].thTotal}</th>
-        <th>${DICT[lang].thScore}</th>
-      </tr></thead>
-      <tbody>
-        ${rows.map((p,i) => `<tr>
-          <td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
-          <td style="font-weight:700">${p.name}</td>
-          <td style="color:var(--muted);font-size:13px">${p.login||'—'}</td>
-          <td><span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></td>
-          <td style="color:${p.misssort>0?'var(--red)':'var(--muted)'}">${p.misssort}</td>
-          <td style="color:${p.fsaf>0?'var(--red)':'var(--muted)'}">${p.fsaf}</td>
-          <td>${p.pph}</td>
-          <td>${p.totalpkg}</td>
-          <td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td>
-        </tr>`).join('')}
-      </tbody>
+      <thead><tr>${visibleCols.map(c=>`<th>${c.header}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map((p,i) => {
+        const cells = [];
+        visibleCols.forEach(c => {
+          if(c.key==='rank') {
+            cells.push(`<td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>`);
+          } else if(c.key==='name') {
+            cells.push(`<td style="font-weight:700">${p.name}</td>`);
+          } else if(c.key==='login') {
+            cells.push(`<td style="color:var(--muted);font-size:13px">${p.login||'—'}</td>`);
+          } else if(c.key==='level') {
+            cells.push(`<td><span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></td>`);
+          } else if(c.key==='misssort') {
+            cells.push(`<td style="color:${p.misssort>0?'var(--red)':'var(--muted)'}">${p.misssort}</td>`);
+          } else if(c.key==='fsaf') {
+            cells.push(`<td style="color:${p.fsaf>0?'var(--red)':'var(--muted)'}">${p.fsaf}</td>`);
+          } else if(c.key==='pph') {
+            cells.push(`<td>${p.pph}</td>`);
+          } else if(c.key==='totalpkg') {
+            cells.push(`<td>${p.totalpkg}</td>`);
+          } else if(c.key==='score') {
+            cells.push(`<td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td>`);
+          }
+        });
+        return `<tr>${cells.join('')}</tr>`;
+      }).join('')}</tbody>
     </table>`;
     sec.appendChild(wrap);
     page.appendChild(sec);
@@ -435,8 +862,8 @@ function renderFuture(data){
   if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
 
   CATS.forEach(cat => {
-    let lvl1 = data.filter(r => r.cat === cat.key && r.level === 1).sort((a,b) => b.score - a.score);
-    let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2).sort((a,b) => b.score - a.score);
+    let lvl1 = data.filter(r => r.cat === cat.key && r.level === 1 && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
+    let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2 && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
     
     let futureWinners = [lvl1[0], lvl2[0], lvl1[1]]; 
     
@@ -447,7 +874,9 @@ function renderFuture(data){
       <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
       <span class="wnote">${DICT[lang].noteFuture}</span></div>`;
     
-    sec.appendChild(buildPodium(futureWinners, cat, true));
+    if (!displaySettings.hidePodium) {
+      sec.appendChild(buildPodium(futureWinners, cat, true));
+    }
     page.appendChild(sec);
   });
   if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
@@ -467,13 +896,20 @@ function buildPodium(players, cat, isFuture=false){
       <div class="pod-name">${p.name}</div>
       <div class="pod-login">${p.login||'—'}</div>
       <span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span>
-      <div class="pod-score" style="margin-top:5px">${p.score.toFixed(2)}</div>
-      <div class="pod-score-lbl">${DICT[lang].pt}</div>
-    </div><div class="pod-base">${bases[vi]}</div>`;
+      ${!displaySettings.hideScores?`<div class="pod-score" style="margin-top:5px">${p.score.toFixed(2)}</div><div class="pod-score-lbl">${DICT[lang].pt}</div>`:''}
+    </div>${!displaySettings.hideRanks?`<div class="pod-base">${bases[vi]}</div>`:''}`;
     wrap.appendChild(div);
   });
   return wrap;
 }
+
+// تحميل الإعدادات المحفوظة من Firebase عند البدء
+db.ref('displaySettings').once('value', (snap) => {
+  if (snap.val()) {
+    displaySettings = snap.val();
+    if (!displaySettings.hiddenNames) displaySettings.hiddenNames = [];
+  }
+});
 
 window.onload=()=>{
   const saved=localStorage.getItem('compData');
@@ -484,12 +920,19 @@ window.onload=()=>{
         buildDatePills(); render();
         document.getElementById('uploadScreen').style.display='none';
         document.getElementById('app').style.display='block';
-        // إظهار زر النشر إذا كانت البيانات موجودة مسبقاً
         document.getElementById('publishBtn').style.display = 'inline-block';
+        document.getElementById('settingsBtn').style.display = 'inline-block';
       }
     }catch(e){}
   }
 };
+
+// إغلاق قائمة البحث عند الضغط خارجها
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.name-search-input') && !e.target.closest('.name-search-results')) {
+    document.getElementById('nameSearchResults').classList.remove('show');
+  }
+});
 </script>
 </body>
 </html>
