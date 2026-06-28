@@ -4,23 +4,433 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Peak Amazon | Competitions</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&display=swap');
-  body { font-family: 'Tajawal', sans-serif; background: #07090f; color: #e8edf5; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-  .container { text-align: center; background: #0f1520; padding: 40px; border-radius: 20px; border: 1px solid #1a2540; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-  h1 { margin-bottom: 30px; font-weight: 900; font-size: 24px; display: flex; flex-direction: column; gap: 10px; }
-  .gold { color: #ffd700; }
-  .btn { display: block; width: 100%; padding: 15px; margin: 15px 0; border-radius: 10px; text-decoration: none; font-size: 16px; font-weight: 700; transition: 0.2s; border: none; cursor: pointer; }
-  .btn-admin { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; }
-  .btn-viewer { background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; color: #60a5fa; }
-  .btn:hover { background: #1a2540; transform: translateY(-2px); }
+:root {
+  --bg: #060810;
+  --card: #0d1220;
+  --border: #1a2540;
+  --gold: #ffd700;
+  --gold-dim: rgba(255,215,0,0.15);
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --blue-light: #60a5fa;
+  --text: #e8edf5;
+  --muted: #5a6a8a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* === خلفية متحركة === */
+.bg-layer {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+.bg-glow {
+  position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.3;
+}
+.bg-glow-1 {
+  width: 500px; height: 500px; top: -150px; right: -100px;
+  background: radial-gradient(circle, rgba(255,215,0,0.25), transparent 70%);
+  animation: glowDrift1 12s ease-in-out infinite alternate;
+}
+.bg-glow-2 {
+  width: 400px; height: 400px; bottom: -100px; left: -80px;
+  background: radial-gradient(circle, rgba(59,130,246,0.2), transparent 70%);
+  animation: glowDrift2 15s ease-in-out infinite alternate;
+}
+.bg-glow-3 {
+  width: 300px; height: 300px; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(239,68,68,0.1), transparent 70%);
+  animation: glowPulse 8s ease-in-out infinite;
+}
+
+@keyframes glowDrift1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-60px, 40px) scale(1.15); }
+}
+@keyframes glowDrift2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(50px, -30px) scale(1.1); }
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.25; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* شبكة خلفية */
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,215,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,215,0,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* جزيئات عائمة */
+.particles-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* === المحتوى الرئيسي === */
+.main-wrapper {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 40px; padding: 40px 20px; width: 100%; max-width: 520px;
+}
+
+/* الشعار والعنوان */
+.brand {
+  text-align: center;
+  animation: fadeSlideDown 0.8s ease-out both;
+}
+
+@keyframes fadeSlideDown {
+  0% { opacity: 0; transform: translateY(-30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.trophy-icon {
+  width: 90px; height: 90px; margin: 0 auto 20px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+
+.trophy-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--gold);
+  border-right-color: rgba(255,215,0,0.3);
+  animation: ringRotate 4s linear infinite;
+}
+.trophy-ring:nth-child(2) {
+  inset: -8px; border-top-color: rgba(255,215,0,0.4); border-right-color: transparent;
+  animation-duration: 6s; animation-direction: reverse;
+}
+
+@keyframes ringRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.trophy-inner {
+  font-size: 42px; position: relative; z-index: 1;
+  filter: drop-shadow(0 0 20px rgba(255,215,0,0.4));
+  animation: trophyFloat 3s ease-in-out infinite;
+}
+
+@keyframes trophyFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.brand-title {
+  font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 6px;
+}
+.brand-title .highlight {
+  background: linear-gradient(135deg, var(--gold), #ffaa00, var(--gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textShimmer 3s linear infinite;
+}
+
+@keyframes textShimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.brand-sub {
+  font-size: 14px; color: var(--muted); font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+.brand-divider {
+  width: 60px; height: 3px; margin: 16px auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  border-radius: 2px;
+}
+
+/* === بطاقات الدخول === */
+.cards-row {
+  display: flex; flex-direction: column; gap: 18px; width: 100%;
+}
+
+.entry-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px 28px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex; align-items: center; gap: 18px;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.entry-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity 0.35s;
+  border-radius: 18px;
+}
+
+.entry-card:hover { transform: translateY(-4px); border-color: transparent; }
+.entry-card:hover::before { opacity: 1; }
+
+.entry-card:active { transform: translateY(-1px) scale(0.99); }
+
+/* كارد الأدمن */
+.card-admin::before {
+  background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));
+}
+.card-admin:hover {
+  border-color: rgba(239,68,68,0.4);
+  box-shadow: 0 12px 40px rgba(239,68,68,0.12), 0 0 0 1px rgba(239,68,68,0.1);
+}
+
+/* كارد المشاهد */
+.card-viewer::before {
+  background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(59,130,246,0.02));
+}
+.card-viewer:hover {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 12px 40px rgba(59,130,246,0.12), 0 0 0 1px rgba(59,130,246,0.1);
+}
+
+/* أيقونة الكارد */
+.card-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0; position: relative; z-index: 1;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.entry-card:hover .card-icon { transform: scale(1.1) rotate(-3deg); }
+
+.card-admin .card-icon {
+  background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05));
+  border: 1px solid rgba(239,68,68,0.25);
+  color: var(--red);
+}
+.card-viewer .card-icon {
+  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
+  border: 1px solid rgba(59,130,246,0.25);
+  color: var(--blue-light);
+}
+
+/* نص الكارد */
+.card-text { position: relative; z-index: 1; flex: 1; }
+.card-text h2 {
+  font-size: 17px; font-weight: 900; margin-bottom: 4px;
+}
+.card-text p {
+  font-size: 12px; color: var(--muted); font-weight: 700;
+}
+
+/* سهم الكارد */
+.card-arrow {
+  font-size: 18px; color: var(--muted); position: relative; z-index: 1;
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateX(-8px);
+}
+html[dir="rtl"] .card-arrow { transform: translateX(8px); }
+.entry-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+/* === تذييل === */
+.footer-note {
+  text-align: center; font-size: 11px; color: var(--muted); opacity: 0.5;
+  animation: fadeSlideDown 0.8s 0.4s ease-out both;
+}
+
+/* === ريسبونسف === */
+@media (min-width: 540px) {
+  .cards-row { flex-direction: row; }
+  .entry-card { justify-content: center; }
+  .brand-title { font-size: 32px; }
+}
+
+@media (max-width: 400px) {
+  .brand-title { font-size: 24px; }
+  .entry-card { padding: 20px; gap: 14px; }
+  .card-icon { width: 46px; height: 46px; font-size: 20px; }
+  .card-text h2 { font-size: 15px; }
+  .trophy-icon { width: 75px; height: 75px; }
+  .trophy-inner { font-size: 36px; }
+}
+
+/* تحسينات الحركة */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.card-admin { animation: fadeSlideUp 0.6s 0.15s ease-out both; }
+.card-viewer { animation: fadeSlideUp 0.6s 0.3s ease-out both; }
+
+@keyframes fadeSlideUp {
+  0% { opacity: 0; transform: translateY(25px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🏆 <span class="gold">نظام المسابقات</span><span>Competitions System</span></h1>
-    <a href="admin.html" class="btn btn-admin">🔐 الدخول للوحة الإدارة | Admin Panel</a>
-    <a href="viewer.html" class="btn btn-viewer">👁️ الدخول لشاشة العرض | Viewer Screen</a>
+
+<!-- طبقات الخلفية -->
+<div class="bg-layer">
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+  <div class="bg-grid"></div>
+</div>
+<canvas class="particles-canvas" id="particlesCanvas"></canvas>
+
+<!-- المحتوى -->
+<div class="main-wrapper">
+
+  <!-- العنوان -->
+  <div class="brand">
+    <div class="trophy-icon">
+      <div class="trophy-ring"></div>
+      <div class="trophy-ring"></div>
+      <div class="trophy-inner">&#127942;</div>
+    </div>
+    <div class="brand-title">
+      <span class="highlight">نظام المسابقات</span>
+    </div>
+    <div class="brand-sub">Peak Amazon &mdash; Competitions System</div>
+    <div class="brand-divider"></div>
   </div>
+
+  <!-- بطاقات الدخول -->
+  <div class="cards-row">
+    <a href="admin.html" class="entry-card card-admin">
+      <div class="card-icon">&#128274;</div>
+      <div class="card-text">
+        <h2>لوحة الإدارة</h2>
+        <p>Admin Panel &mdash; رفع البيانات والتحكم بالعرض</p>
+      </div>
+      <div class="card-arrow">&#8592;</div>
+    </a>
+
+    <a href="viewer.html" class="entry-card card-viewer">
+      <div class="card-icon">&#128065;</div>
+      <div class="card-text">
+        <h2>شاشة العرض</h2>
+        <p>Viewer Screen &mdash; عرض النتائج للمشاهدين</p>
+      </div>
+      <div class="card-arrow">&#8592;</div>
+    </a>
+  </div>
+
+  <div class="footer-note">Peak Amazon Operations</div>
+</div>
+
+<script>
+// === جزيئات عائمة في الخلفية ===
+(function() {
+  const canvas = document.getElementById('particlesCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // إنشاء الجزيئات
+  const COUNT = 50;
+  const colors = [
+    'rgba(255,215,0,', 'rgba(59,130,246,', 'rgba(239,68,68,',
+    'rgba(96,165,250,', 'rgba(192,192,192,'
+  ];
+
+  for (let i = 0; i < COUNT; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.8 + 0.4,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: Math.random() * 0.4 + 0.1,
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.015 + 0.005
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    particles.forEach(p => {
+      p.x += p.dx;
+      p.y += p.dy;
+      p.pulse += p.pulseSpeed;
+
+      // لف حول الحواف
+      if (p.x < -10) p.x = w + 10;
+      if (p.x > w + 10) p.x = -10;
+      if (p.y < -10) p.y = h + 10;
+      if (p.y > h + 10) p.y = -10;
+
+      const currentAlpha = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+      const currentR = Math.max(0.1, p.r * (0.85 + 0.15 * Math.sin(p.pulse)));
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, currentR, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + currentAlpha + ')';
+      ctx.fill();
+
+      // هالة خفيفة
+      if (currentR > 1) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, currentR * 3, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + (currentAlpha * 0.15) + ')';
+        ctx.fill();
+      }
+    });
+
+    // خطوط ربط خفيفة بين الجزيئات القريبة
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          const lineAlpha = (1 - dist / 120) * 0.06;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(255,215,0,' + lineAlpha + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
 </body>
 </html>
