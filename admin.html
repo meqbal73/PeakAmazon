@@ -5,30 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- إضافة مكتبة Firebase -->
+<!-- إضافة مكتبات Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 <style>
-/* ... هنا تنسيقاتك الأصلية كما هي ... */
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
-:root { --bg:#07090f;--panel:#0f1520;--panel2:#141c2e;--border:#1a2540; --gold:#ffd700; --accent:#3b82f6; --text:#e8edf5; --green:#22c55e; }
+:root {
+  --bg:#07090f;--panel:#0f1520;--panel2:#141c2e;--border:#1a2540;
+  --gold:#ffd700;--silver:#c0c0c0;--bronze:#cd7f32;
+  --future:#ff4d6d;--regular:#60a5fa;--accent:#3b82f6;
+  --text:#e8edf5;--muted:#4a5a7a;--green:#22c55e;--red:#ef4444;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-.upload-box{background:var(--panel);border:2px dashed var(--border);border-radius:20px;padding:36px;text-align:center;width:100%;max-width:440px;margin:50px auto;}
-.up-btn{background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;padding:10px 28px;border-radius:10px;color:white;font-weight:700;cursor:pointer;}
-.publish-btn { background: var(--green); border: none; color: white; padding: 10px 28px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 10px; display: none; }
+html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+/* UPLOAD */
+#uploadScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:32px;background:radial-gradient(ellipse at 50% 0%,#0d1b3e 0%,#07090f 60%);}
+.upload-hero{text-align:center;}
+.upload-hero .trophy{font-size:64px;margin-bottom:12px;filter:drop-shadow(0 0 30px #ffd70066);}
+.upload-hero h1{font-size:32px;font-weight:900;}
+.admin-badge{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:8px;display:inline-block;}
+.upload-box{background:var(--panel);border:2px dashed var(--border);border-radius:20px;padding:36px 48px;text-align:center;cursor:pointer;transition:all .2s;width:100%;max-width:440px;}
+.upload-box:hover,.upload-box.drag{border-color:var(--accent);background:rgba(59,130,246,.06);}
+.up-btn{background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;padding:10px 28px;border-radius:10px;color:white;font-size:15px;font-weight:700;cursor:pointer;}
+#fileInput{display:none;}
+.view-link-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 28px;width:100%;max-width:440px;text-align:center;}
+.link-row{display:flex;gap:8px;align-items:center;margin-top:10px;}
+.link-input{flex:1;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;direction:ltr;}
+.copy-btn{background:var(--accent);border:none;padding:8px 16px;border-radius:8px;color:white;font-weight:700;cursor:pointer;}
+
+/* APP */
+#app{display:none;}
+.top-bar{background:linear-gradient(180deg,#0d1520 0%,transparent 100%);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo .ic{font-size:24px;}
+.logo h1{font-size:18px;font-weight:900;}
+.abadge{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;}
+.top-right{display:flex;align-items:center;gap:8px;}
+.hbtn{background:transparent;border:1px solid var(--border);padding:5px 14px;border-radius:20px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.hbtn:hover{border-color:var(--accent);color:var(--accent);}
+.lang-btn { background: rgba(255,215,0,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 5px 14px; border-radius: 20px; font-weight: 700; cursor: pointer;}
+/* ... (باقي تنسيقاتك الأصلية كما هي) ... */
 </style>
 </head>
 <body>
 
 <div id="uploadScreen">
-  <div class="upload-box">
-    <h1>لوحة الإدارة</h1>
-    <button class="up-btn" onclick="document.getElementById('fileInput').click()">اختر ملف الإكسل</button>
-    <input type="file" id="fileInput" accept=".xlsx" style="display:none" onchange="processFile(this.files[0])">
-    <!-- زر النشر الجديد -->
-    <button id="publishBtn" class="publish-btn" onclick="publishResults()">نشر النتائج للقروب 🚀</button>
+  <div class="upload-hero">
+    <div class="trophy">🏆</div>
+    <span class="admin-badge t-admin-lbl">🔐 لوحة الإدارة</span>
+    <h1 class="t-title">لوحة <span style="color:var(--gold)">المسابقات</span></h1>
+    <p class="t-sub">ارفع ملف الإكسل اليومي — البيانات تُحفظ وتظهر للمشاهدين تلقائياً</p>
   </div>
+  <div class="upload-box" id="uploadBox">
+    <h2 class="t-up-title">📊 ارفع ملف الإكسل</h2>
+    <p class="t-up-desc">يجب أن يحتوي على أعمدة:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg</p>
+    <button class="up-btn t-btn-up" onclick="document.getElementById('fileInput').click()">اختر ملف</button>
+    <input type="file" id="fileInput" accept=".xlsx,.xls">
+  </div>
+  <div class="view-link-box">
+    <h3 class="t-link-lbl" style="color:var(--muted);font-size:14px;">🔗 رابط المشاهدة (شاركه مع الجميع)</h3>
+    <div class="link-row">
+      <input class="link-input" id="viewLinkInput" readonly value="">
+      <button class="copy-btn t-btn-copy" id="copyBtn" onclick="copyLink()">نسخ</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="top-bar">
+    <div class="logo">
+      <span class="ic">🏆</span>
+      <h1 class="t-title">لوحة <span style="color:var(--gold)">المسابقات</span></h1>
+      <span class="abadge t-admin-lbl">🔐 إدارة</span>
+    </div>
+    <div class="top-right">
+      <!-- الزر المضاف للنشر -->
+      <button id="publishBtn" class="hbtn" style="display:none; color:var(--green); border-color:var(--green);" onclick="publishResults()">نشر النتائج (Publish) 🚀</button>
+      <button class="lang-btn" onclick="toggleLang()">🌐 EN / AR</button>
+      <button class="hbtn t-btn-new" onclick="changeFile()">↑ ملف جديد</button>
+    </div>
+  </div>
+  <!-- (باقي محتويات app الأصلية كما هي) -->
 </div>
 
 <script>
@@ -44,29 +103,22 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-let allData = [];
 
-function processFile(file) {
-    const reader = new FileReader();
-    reader.onload = e => {
-        const wb = XLSX.read(e.target.result,{type:'array'});
-        const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:0});
-        // --- هنا ضع منطق المعالجة الخاص بك ---
-        allData = rows; 
-        document.getElementById('publishBtn').style.display = 'inline-block';
-        alert("تم رفع الملف! اضغط على زر النشر الآن.");
-    };
-    reader.readAsArrayBuffer(file);
-}
+// --- بقية كودك الأصلي كما هو ---
+// (انسخ هنا باقي دوالك البرمجية t-tab-all, processFile, etc...)
 
 function publishResults() {
     const btn = document.getElementById('publishBtn');
     btn.textContent = "جاري النشر...";
     db.ref('competitionsData').set(allData).then(() => {
-        alert("تم إرسال البيانات للقروب بنجاح! 🎉");
+        alert("تم النشر للقروب! 🎉");
         btn.textContent = "نشر النتائج (Publish) 🚀";
     });
 }
+
+// تأكد من إضافة هذا السطر داخل دالة processFile بعد معالجة الملف:
+// document.getElementById('publishBtn').style.display = 'inline-block';
+
 </script>
 </body>
 </html>
