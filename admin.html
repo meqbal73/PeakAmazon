@@ -20,7 +20,6 @@
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-/* UPLOAD */
 #uploadScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:32px;background:radial-gradient(ellipse at 50% 0%,#0d1b3e 0%,#07090f 60%);}
 .upload-hero{text-align:center;}
 .upload-hero .trophy{font-size:64px;margin-bottom:12px;filter:drop-shadow(0 0 30px #ffd70066);}
@@ -35,7 +34,6 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 .link-input{flex:1;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;direction:ltr;}
 .copy-btn{background:var(--accent);border:none;padding:8px 16px;border-radius:8px;color:white;font-weight:700;cursor:pointer;}
 
-/* APP */
 #app{display:none;}
 .top-bar{background:linear-gradient(180deg,#0d1520 0%,transparent 100%);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;}
 .logo{display:flex;align-items:center;gap:10px;}
@@ -52,21 +50,20 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 .settings-btn:hover { background: rgba(249,115,22,.2)!important; }
 
 .date-row{padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:var(--panel);}
-.dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;}
+.dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;}
 .dpill.active{background:var(--accent);border-color:var(--accent);color:white;}
 
 .tabs{display:flex;padding:18px 24px 0;gap:8px;}
 .tab{padding:9px 24px;border-radius:12px 12px 0 0;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);border-bottom:none;background:var(--panel2);color:var(--muted);}
 .tab.active{background:rgba(255,215,0,.08);border-color:var(--gold);color:var(--gold);}
 
-.page{display:none;border-top:2px solid var(--border);padding:24px; border-top-color:var(--gold);}
+.page{display:none;border-top:2px solid var(--border);padding:24px;border-top-color:var(--gold);}
 .page.active{display:block;}
 
 .formula-strip{margin:0 24px 18px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 16px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px;}
 .formula-strip .ftitle{color:var(--red);font-weight:900;}
-.neg{color:#ef4444;font-weight:700; background:rgba(239,68,68,.1); padding:2px 8px; border-radius:6px;}
+.neg{color:#ef4444;font-weight:700;background:rgba(239,68,68,.1);padding:2px 8px;border-radius:6px;}
 
-/* Category sections */
 .cat-section{margin-bottom:46px;}
 .cat-label{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .cat-dot{width:10px;height:10px;border-radius:50%;}
@@ -74,7 +71,6 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 .wnote{font-size:12px;padding:3px 12px;border-radius:20px;font-weight:700;background:rgba(255,215,0,.1);color:var(--gold);border:1px solid var(--gold);}
 html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-left: auto; }
 
-/* PODIUM */
 .podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:24px;padding:0 4px;}
 .podium-player{flex:1;max-width:190px;display:flex;flex-direction:column;align-items:center;}
 .pod-card{width:100%;border-radius:16px 16px 0 0;padding:14px 10px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;}
@@ -96,9 +92,8 @@ html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-l
 .p2 .pod-base{height:52px;background:linear-gradient(180deg,#c0c0c0,#808080);color:#000;}
 .p3 .pod-base{height:36px;background:linear-gradient(180deg,#cd7f32,#8b4513);color:#000;}
 
-/* ALL TABLE */
 .all-table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:14px; text-align:right;}
+table{width:100%;border-collapse:collapse;font-size:14px;text-align:right;}
 html[dir="ltr"] table {text-align:left;}
 thead tr{background:var(--panel2);border-bottom:2px solid var(--border);}
 thead th{padding:10px 14px;font-weight:700;color:var(--muted);font-size:12px;white-space:nowrap;}
@@ -107,129 +102,126 @@ tbody tr:hover{background:rgba(255,255,255,.03);}
 td{padding:10px 14px;white-space:nowrap;}
 .rank-td{font-weight:900;font-size:15px;text-align:center;}
 .score-td{font-weight:900;font-size:15px;}
-.lvl-badge {font-size:9px; padding:2px 6px; border-radius:6px; margin-top:3px; display:inline-block;}
-.lvl1 {background:rgba(255,77,109,.15); color:var(--future); border:1px solid var(--future);}
-.lvl2 {background:rgba(96,165,250,.15); color:var(--regular); border:1px solid var(--regular);}
+.lvl-badge {font-size:9px;padding:2px 6px;border-radius:6px;margin-top:3px;display:inline-block;}
+.lvl1 {background:rgba(255,77,109,.15);color:var(--future);border:1px solid var(--future);}
+.lvl2 {background:rgba(96,165,250,.15);color:var(--regular);border:1px solid var(--regular);}
 
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
 
-/* === نافذة الإعدادات === */
+/* نافذة الإعدادات */
 .settings-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(6px);
-  display:none; align-items:center; justify-content:center; z-index:9999; padding:20px;
+  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;
 }
 .settings-overlay.open { display:flex; }
 .settings-panel {
-  background: var(--panel); border:1px solid var(--border); border-radius:20px;
-  width:100%; max-width:680px; max-height:85vh; overflow-y:auto; padding:28px;
-  box-shadow: 0 25px 80px rgba(0,0,0,.6);
+  background:var(--panel);border:1px solid var(--border);border-radius:20px;
+  width:100%;max-width:680px;max-height:85vh;overflow-y:auto;padding:28px;
+  box-shadow:0 25px 80px rgba(0,0,0,.6);position:relative;
 }
-.settings-panel h2 {
-  font-size:22px; font-weight:900; margin-bottom:6px; display:flex; align-items:center; gap:10px;
-}
-.settings-panel .sub { color:var(--muted); font-size:13px; margin-bottom:22px; }
+.settings-panel h2 { font-size:22px;font-weight:900;margin-bottom:6px;display:flex;align-items:center;gap:10px; }
+.settings-panel .sub { color:var(--muted);font-size:13px;margin-bottom:22px; }
 .settings-section { margin-bottom:22px; }
 .settings-section h3 {
-  font-size:14px; font-weight:900; color:var(--orange); margin-bottom:10px;
-  padding-bottom:6px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px;
+  font-size:14px;font-weight:900;color:var(--orange);margin-bottom:10px;
+  padding-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;
 }
-.toggle-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:8px; }
+.toggle-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px; }
 .toggle-item {
-  display:flex; align-items:center; justify-content:space-between;
-  background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:10px 14px;
-  transition: all .15s; cursor:pointer; user-select:none;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;
+  transition:all .15s;cursor:pointer;user-select:none;
 }
 .toggle-item:hover { border-color:var(--accent); }
-.toggle-item.off { opacity:.45; border-color:var(--red); background:rgba(239,68,68,.04); }
-.toggle-item .tl { font-size:13px; font-weight:700; }
-.toggle-item .ts { font-size:10px; color:var(--muted); }
+.toggle-item.off { opacity:.45;border-color:var(--red);background:rgba(239,68,68,.04); }
+.toggle-item .tl { font-size:13px;font-weight:700; }
+.toggle-item .ts { font-size:10px;color:var(--muted); }
 .toggle-switch {
-  width:40px; height:22px; border-radius:11px; background:var(--border);
-  position:relative; transition: background .2s; flex-shrink:0;
+  width:40px;height:22px;border-radius:11px;background:var(--border);
+  position:relative;transition:background .2s;flex-shrink:0;
 }
 .toggle-switch::after {
-  content:''; position:absolute; top:3px; left:3px; width:16px; height:16px;
-  border-radius:50%; background:white; transition: transform .2s;
+  content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;
+  border-radius:50%;background:white;transition:transform .2s;
 }
 .toggle-item:not(.off) .toggle-switch { background:var(--green); }
 .toggle-item:not(.off) .toggle-switch::after { transform:translateX(18px); }
-html[dir="rtl"] .toggle-switch::after { left:auto; right:3px; }
+html[dir="rtl"] .toggle-switch::after { left:auto;right:3px; }
 html[dir="rtl"] .toggle-item:not(.off) .toggle-switch::after { transform:translateX(-18px); }
 
-/* قائمة الأسماء المخفية */
 .hidden-names-list {
-  max-height:160px; overflow-y:auto; background:var(--panel2); border:1px solid var(--border);
-  border-radius:10px; padding:8px; margin-top:8px;
+  max-height:160px;overflow-y:auto;background:var(--panel2);border:1px solid var(--border);
+  border-radius:10px;padding:8px;margin-top:8px;
 }
 .hidden-name-chip {
-  display:inline-flex; align-items:center; gap:6px; background:rgba(239,68,68,.1);
-  border:1px solid rgba(239,68,68,.3); color:var(--red); padding:4px 12px;
-  border-radius:20px; font-size:12px; font-weight:700; margin:3px;
+  display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,.1);
+  border:1px solid rgba(239,68,68,.3);color:var(--red);padding:4px 12px;
+  border-radius:20px;font-size:12px;font-weight:700;margin:3px;
 }
-.hidden-name-chip button {
-  background:none; border:none; color:var(--red); cursor:pointer; font-size:14px; font-weight:900; line-height:1;
-}
+.hidden-name-chip button { background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;font-weight:900;line-height:1; }
 .name-search-input {
-  width:100%; background:var(--panel2); border:1px solid var(--border); border-radius:10px;
-  padding:10px 14px; color:var(--text); font-size:13px; margin-bottom:8px; outline:none;
-  font-family:inherit;
+  width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;color:var(--text);font-size:13px;margin-bottom:8px;outline:none;font-family:inherit;
 }
 .name-search-input:focus { border-color:var(--accent); }
 .name-search-results {
-  max-height:150px; overflow-y:auto; background:var(--panel2); border:1px solid var(--border);
-  border-radius:10px; padding:4px; display:none;
+  max-height:150px;overflow-y:auto;background:var(--panel2);border:1px solid var(--border);
+  border-radius:10px;padding:4px;display:none;
 }
 .name-search-results.show { display:block; }
 .name-result-item {
-  padding:8px 12px; border-radius:8px; font-size:13px; cursor:pointer; transition:background .1s;
-  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer;transition:background .1s;
+  display:flex;align-items:center;justify-content:space-between;
 }
 .name-result-item:hover { background:rgba(59,130,246,.1); }
 .name-result-item .nr-name { font-weight:700; }
-.name-result-item .nr-cat { font-size:11px; color:var(--muted); }
+.name-result-item .nr-cat { font-size:11px;color:var(--muted); }
 
-.settings-actions {
-  display:flex; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border);
+/* تبديل الأيام */
+.dates-toggle-grid { display:flex;flex-wrap:wrap;gap:8px; }
+.date-toggle {
+  padding:8px 18px;border-radius:12px;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .15s;user-select:none;
+  border:1px solid var(--border);background:var(--panel2);color:var(--muted);
 }
+.date-toggle:hover { border-color:var(--accent); }
+.date-toggle.on { background:rgba(34,197,94,.12);border-color:var(--green);color:var(--green); }
+
+.settings-actions { display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border); }
 .btn-save-settings {
-  flex:1; background:linear-gradient(135deg,var(--green),#16a34a); border:none;
-  padding:12px; border-radius:12px; color:white; font-size:15px; font-weight:900;
-  cursor:pointer; transition:all .2s; font-family:inherit;
+  flex:1;background:linear-gradient(135deg,var(--green),#16a34a);border:none;
+  padding:12px;border-radius:12px;color:white;font-size:15px;font-weight:900;
+  cursor:pointer;transition:all .2s;font-family:inherit;
 }
-.btn-save-settings:hover { transform:scale(1.02); box-shadow:0 0 20px rgba(34,197,94,.3); }
+.btn-save-settings:hover { transform:scale(1.02);box-shadow:0 0 20px rgba(34,197,94,.3); }
 .btn-reset-settings {
-  background:transparent; border:1px solid var(--border); padding:12px 20px;
-  border-radius:12px; color:var(--muted); font-size:14px; font-weight:700;
-  cursor:pointer; transition:all .15s; font-family:inherit;
+  background:transparent;border:1px solid var(--border);padding:12px 20px;
+  border-radius:12px;color:var(--muted);font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .15s;font-family:inherit;
 }
-.btn-reset-settings:hover { border-color:var(--red); color:var(--red); }
+.btn-reset-settings:hover { border-color:var(--red);color:var(--red); }
 .btn-close-settings {
-  position:absolute; top:16px; left:16px; background:none; border:none;
-  color:var(--muted); font-size:24px; cursor:pointer; transition:color .15s;
-  line-height:1;
+  position:absolute;top:16px;left:16px;background:none;border:none;
+  color:var(--muted);font-size:24px;cursor:pointer;transition:color .15s;line-height:1;
 }
-html[dir="rtl"] .btn-close-settings { left:auto; right:16px; }
+html[dir="rtl"] .btn-close-settings { left:auto;right:16px; }
 .btn-close-settings:hover { color:var(--red); }
 
-.settings-panel { position:relative; }
-
-/* إشعار التوست */
 .toast {
-  position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px);
-  background:var(--green); color:white; padding:12px 28px; border-radius:14px;
-  font-weight:900; font-size:14px; z-index:99999; transition:transform .4s cubic-bezier(.22,1,.36,1);
-  box-shadow:0 10px 40px rgba(34,197,94,.4); font-family:inherit;
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--green);color:white;padding:12px 28px;border-radius:14px;
+  font-weight:900;font-size:14px;z-index:99999;transition:transform .4s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 10px 40px rgba(34,197,94,.4);font-family:inherit;
 }
 .toast.show { transform:translateX(-50%) translateY(0); }
-.toast.error { background:var(--red); box-shadow:0 10px 40px rgba(239,68,68,.4); }
+.toast.error { background:var(--red);box-shadow:0 10px 40px rgba(239,68,68,.4); }
 </style>
 </head>
 <body>
 
-<!-- UPLOAD SCREEN -->
 <div id="uploadScreen">
   <div class="upload-hero">
     <div class="trophy">🏆</div>
@@ -237,14 +229,12 @@ html[dir="rtl"] .btn-close-settings { left:auto; right:16px; }
     <h1 class="t-title">لوحة <span style="color:var(--gold)">المسابقات</span></h1>
     <p class="t-sub">ارفع ملف الإكسل اليومي — البيانات تُحفظ وتظهر للمشاهدين تلقائياً</p>
   </div>
-
   <div class="upload-box" id="uploadBox">
     <h2 class="t-up-title">📊 ارفع ملف الإكسل</h2>
     <p class="t-up-desc">يجب أن يحتوي على أعمدة:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg</p>
     <button class="up-btn t-btn-up" onclick="document.getElementById('fileInput').click()">اختر ملف</button>
     <input type="file" id="fileInput" accept=".xlsx,.xls">
   </div>
-
   <div class="view-link-box">
     <h3 class="t-link-lbl" style="color:var(--muted);font-size:14px;">🔗 رابط المشاهدة (شاركه مع الجميع)</h3>
     <div class="link-row">
@@ -254,7 +244,6 @@ html[dir="rtl"] .btn-close-settings { left:auto; right:16px; }
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <div class="top-bar">
     <div class="logo">
@@ -269,23 +258,19 @@ html[dir="rtl"] .btn-close-settings { left:auto; right:16px; }
       <button class="hbtn t-btn-new" onclick="changeFile()">↑ ملف جديد</button>
     </div>
   </div>
-
   <div class="date-row">
     <span style="font-size:18px">📅</span>
     <div id="datePills"></div>
   </div>
-
   <div class="formula-strip" id="formulaStrip">
     <span class="ftitle t-calc">🔻 الخصومات:</span>
     <span class="neg">Miss-sort: -50</span>
     <span class="neg">FSAF: -10</span>
   </div>
-
   <div class="tabs" id="tabsRow">
     <div class="tab active t-tab-all" onclick="switchTab('all')">📋 جميع المتسابقين</div>
     <div class="tab t-tab-future" onclick="switchTab('future')">🌟 فائزين فيوتشر</div>
   </div>
-
   <div class="page active" id="pageAll"></div>
   <div class="page" id="pageFuture"></div>
 </div>
@@ -297,19 +282,23 @@ html[dir="rtl"] .btn-close-settings { left:auto; right:16px; }
     <h2>⚙️ إعدادات العرض</h2>
     <p class="sub">تحكم بما يراه المشاهدون — التغييرات تُطبق بعد النشر</p>
 
-    <!-- إخفاء عناصر الصفحة -->
+    <div class="settings-section">
+      <h3>📅 الأيام الظاهرة للمشاهدين</h3>
+      <div class="dates-toggle-grid" id="datesToggleGrid">
+        <p style="color:var(--muted);font-size:12px;" id="noDatesMsg">ارفع ملف أولاً لتظهر الأيام</p>
+      </div>
+    </div>
+
     <div class="settings-section">
       <h3>🔲 إخفاء عناصر الصفحة</h3>
       <div class="toggle-grid" id="pageToggles"></div>
     </div>
 
-    <!-- إخفاء أعمدة الجدول -->
     <div class="settings-section">
       <h3>📋 إخفاء أعمدة الجدول</h3>
       <div class="toggle-grid" id="colToggles"></div>
     </div>
 
-    <!-- إخفاء أسماء معينة -->
     <div class="settings-section">
       <h3>👤 إخفاء أسماء معينة</h3>
       <input class="name-search-input" id="nameSearchInput" placeholder="ابحث عن اسم لإخفائه..." oninput="searchNames(this.value)">
@@ -326,109 +315,89 @@ html[dir="rtl"] .btn-close-settings { left:auto; right:16px; }
   </div>
 </div>
 
-<!-- إشعار -->
 <div class="toast" id="toast"></div>
 
 <script>
-// إعدادات Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyD0Mnet_aFBNAhidY2cFJ27d4tNTM2F8A8",
-  authDomain: "peak-ce9b0.firebaseapp.com",
-  projectId: "peak-ce9b0",
-  storageBucket: "peak-ce9b0.firebasestorage.app",
-  messagingSenderId: "658565788853",
-  appId: "1:658565788853:web:bfc3faf8de37e702f9bafc",
-  measurementId: "G-7E52WRZT4Q"
+  apiKey:"AIzaSyD0Mnet_aFBNAhidY2cFJ27d4tNTM2F8A8",
+  authDomain:"peak-ce9b0.firebaseapp.com",
+  projectId:"peak-ce9b0",
+  storageBucket:"peak-ce9b0.firebasestorage.app",
+  messagingSenderId:"658565788853",
+  appId:"1:658565788853:web:bfc3faf8de37e702f9bafc",
+  measurementId:"G-7E52WRZT4Q"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// --- I18N ---
 const DICT = {
   ar: {
-    title: 'لوحة <span style="color:var(--gold)">المسابقات</span>',
-    adminLbl: '🔐 إدارة', sub: 'ارفع ملف الإكسل اليومي — البيانات تُحفظ وتظهر للمشاهدين تلقائياً',
-    upTitle: '📊 ارفع ملف الإكسل',
-    upDesc: 'يجب أن يحتوي على أعمدة:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg',
-    btnUp: 'اختر ملف', linkLbl: '🔗 رابط المشاهدة (شاركه مع الجميع)',
-    btnCopy: 'نسخ', btnNew: '↑ ملف جديد', calc: '🔻 الخصومات:',
-    tabAll: '📋 جميع المتسابقين', tabFuture: '🌟 فائزين فيوتشر',
-    all: 'الكل', copied: '✅ تم النسخ', empty: 'لا توجد بيانات', pt: 'نقطة',
-    noteAll: '🏅 أعلى 3 مراكز', noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
-    thRank: '#', thName: 'الاسم', thLogin: 'Login', thLevel: 'Level',
-    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'النقاط',
-    // إعدادات
-    settingsTitle: '⚙️ إعدادات العرض',
-    settingsSub: 'تحكم بما يراه المشاهدون — التغييرات تُطبق بعد النشر',
-    secPage: '🔲 إخفاء عناصر الصفحة',
-    secCols: '📋 إخفاء أعمدة الجدول',
-    secNames: '👤 إخفاء أسماء معينة',
-    namePlaceholder: 'ابحث عن اسم لإخفائه...',
-    noHidden: 'لا توجد أسماء مخفية',
-    saveBtn: '💾 حفظ ونشر الإعدادات',
-    resetBtn: '🔄 إعادة تعيين',
-    savedMsg: 'تم حفظ الإعدادات ونشرها بنجاح!',
-    publishedMsg: 'تم نشر النتائج للقروب بنجاح! 🎉',
-    publishingMsg: 'جاري النشر...',
-    publishBtnText: 'نشر النتائج 🚀',
-    settingsBtnText: '⚙️ إعدادات العرض',
-    // عناصر الصفحة
-    elPodium: 'المنصة (البوديوم)',
-    elRanks: 'عمود المراكز (#)',
-    elScores: 'عمود النقاط',
-    elFormula: 'شريط الخصومات',
-    elTabs: 'تبويب الفائزين',
-    // أعمدة
-    colRank: 'المراكز (#)',
-    colName: 'الاسم',
-    colLogin: 'Login',
-    colLevel: 'Level',
-    colMiss: 'Miss-sort',
-    colFsaf: 'FSAF',
-    colPph: 'PPH',
-    colTotal: 'Total Pkg',
-    colScore: 'النقاط'
+    title:'لوحة <span style="color:var(--gold)">المسابقات</span>',
+    adminLbl:'🔐 إدارة',sub:'ارفع ملف الإكسل اليومي — البيانات تُحفظ وتظهر للمشاهدين تلقائياً',
+    upTitle:'📊 ارفع ملف الإكسل',
+    upDesc:'يجب أن يحتوي على أعمدة:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg',
+    btnUp:'اختر ملف',linkLbl:'🔗 رابط المشاهدة (شاركه مع الجميع)',
+    btnCopy:'نسخ',btnNew:'↑ ملف جديد',calc:'🔻 الخصومات:',
+    tabAll:'📋 جميع المتسابقين',tabFuture:'🌟 فائزين فيوتشر',
+    empty:'لا توجد بيانات',pt:'نقطة',
+    noteAll:'🏅 أعلى 3 مراكز',noteFuture:'🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
+    thRank:'#',thName:'الاسم',thLogin:'Login',thLevel:'Level',
+    thMiss:'Miss-sort',thFsaf:'FSAF',thPph:'PPH',thTotal:'Total Pkg',thScore:'النقاط',
+    settingsTitle:'⚙️ إعدادات العرض',
+    settingsSub:'تحكم بما يراه المشاهدون — التغييرات تُطبق بعد النشر',
+    secDates:'📅 الأيام الظاهرة للمشاهدين',
+    secPage:'🔲 إخفاء عناصر الصفحة',
+    secCols:'📋 إخفاء أعمدة الجدول',
+    secNames:'👤 إخفاء أسماء معينة',
+    namePlaceholder:'ابحث عن اسم لإخفائه...',
+    noHidden:'لا توجد أسماء مخفية',
+    noDates:'ارفع ملف أولاً لتظهر الأيام',
+    saveBtn:'💾 حفظ ونشر الإعدادات',
+    resetBtn:'🔄 إعادة تعيين',
+    savedMsg:'تم حفظ الإعدادات ونشرها بنجاح!',
+    publishedMsg:'تم نشر النتائج للقروب بنجاح! 🎉',
+    publishingMsg:'جاري النشر...',
+    publishBtnText:'نشر النتائج 🚀',
+    settingsBtnText:'⚙️ إعدادات العرض',
+    elPodium:'المنصة (البوديوم)',elRanks:'عمود المراكز (#)',elScores:'عمود النقاط',
+    elFormula:'شريط الخصومات',elTabs:'تبويب الفائزين',
+    colRank:'المراكز (#)',colName:'الاسم',colLogin:'Login',colLevel:'Level',
+    colMiss:'Miss-sort',colFsaf:'FSAF',colPph:'PPH',colTotal:'Total Pkg',colScore:'النقاط',
+    copied:'✅ تم النسخ'
   },
   en: {
-    title: 'Competitions <span style="color:var(--gold)">Dashboard</span>',
-    adminLbl: '🔐 Admin', sub: 'Upload daily Excel file — Data is saved & synced to viewers automatically',
-    upTitle: '📊 Upload Excel',
-    upDesc: 'Must contain columns:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg',
-    btnUp: 'Select File', linkLbl: '🔗 Viewer Link (Share with everyone)',
-    btnCopy: 'Copy', btnNew: '↑ New File', calc: '🔻 Deductions:',
-    tabAll: '📋 All Contestants', tabFuture: '🌟 Future Winners',
-    all: 'All', copied: '✅ Copied', empty: 'No Data Found', pt: 'pt',
-    noteAll: '🏅 Top 3 Positions', noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
-    thRank: '#', thName: 'Name', thLogin: 'Login', thLevel: 'Level',
-    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'Score',
-    settingsTitle: '⚙️ Display Settings',
-    settingsSub: 'Control what viewers see — Changes apply after publishing',
-    secPage: '🔲 Hide Page Elements',
-    secCols: '📋 Hide Table Columns',
-    secNames: '👤 Hide Specific Names',
-    namePlaceholder: 'Search a name to hide...',
-    noHidden: 'No hidden names',
-    saveBtn: '💾 Save & Publish Settings',
-    resetBtn: '🔄 Reset',
-    savedMsg: 'Settings saved & published successfully!',
-    publishedMsg: 'Results published successfully! 🎉',
-    publishingMsg: 'Publishing...',
-    publishBtnText: 'Publish Results 🚀',
-    settingsBtnText: '⚙️ Display Settings',
-    elPodium: 'Podium',
-    elRanks: 'Rank Column (#)',
-    elScores: 'Score Column',
-    elFormula: 'Deductions Bar',
-    elTabs: 'Winners Tab',
-    colRank: 'Rank (#)',
-    colName: 'Name',
-    colLogin: 'Login',
-    colLevel: 'Level',
-    colMiss: 'Miss-sort',
-    colFsaf: 'FSAF',
-    colPph: 'PPH',
-    colTotal: 'Total Pkg',
-    colScore: 'Score'
+    title:'Competitions <span style="color:var(--gold)">Dashboard</span>',
+    adminLbl:'🔐 Admin',sub:'Upload daily Excel file — Data is saved & synced to viewers automatically',
+    upTitle:'📊 Upload Excel',
+    upDesc:'Must contain columns:<br>Date · Login · Names · Level · Category · Miss-sort · FSAF · PPH · Total Pkg',
+    btnUp:'Select File',linkLbl:'🔗 Viewer Link (Share with everyone)',
+    btnCopy:'Copy',btnNew:'↑ New File',calc:'🔻 Deductions:',
+    tabAll:'📋 All Contestants',tabFuture:'🌟 Future Winners',
+    empty:'No Data Found',pt:'pt',
+    noteAll:'🏅 Top 3 Positions',noteFuture:'🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
+    thRank:'#',thName:'Name',thLogin:'Login',thLevel:'Level',
+    thMiss:'Miss-sort',thFsaf:'FSAF',thPph:'PPH',thTotal:'Total Pkg',thScore:'Score',
+    settingsTitle:'⚙️ Display Settings',
+    settingsSub:'Control what viewers see — Changes apply after publishing',
+    secDates:'📅 Visible Dates for Viewers',
+    secPage:'🔲 Hide Page Elements',
+    secCols:'📋 Hide Table Columns',
+    secNames:'👤 Hide Specific Names',
+    namePlaceholder:'Search a name to hide...',
+    noHidden:'No hidden names',
+    noDates:'Upload a file first to see dates',
+    saveBtn:'💾 Save & Publish Settings',
+    resetBtn:'🔄 Reset',
+    savedMsg:'Settings saved & published successfully!',
+    publishedMsg:'Results published successfully! 🎉',
+    publishingMsg:'Publishing...',
+    publishBtnText:'Publish Results 🚀',
+    settingsBtnText:'⚙️ Display Settings',
+    elPodium:'Podium',elRanks:'Rank Column (#)',elScores:'Score Column',
+    elFormula:'Deductions Bar',elTabs:'Winners Tab',
+    colRank:'Rank (#)',colName:'Name',colLogin:'Login',colLevel:'Level',
+    colMiss:'Miss-sort',colFsaf:'FSAF',colPph:'PPH',colTotal:'Total Pkg',colScore:'Score',
+    copied:'✅ Copied'
   }
 };
 
@@ -439,7 +408,6 @@ function toggleLang() {
   applyLang();
   if(allData.length) { buildDatePills(); render(); buildSettingsUI(); }
 }
-
 function applyLang() {
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -458,74 +426,94 @@ function applyLang() {
   document.querySelector('.t-tab-future').innerText=d.tabFuture;
   document.getElementById('publishBtn').innerText = d.publishBtnText;
   document.getElementById('settingsBtn').innerText = d.settingsBtnText;
-  // إعدادات
   document.querySelector('.settings-panel h2').innerHTML = d.settingsTitle;
   document.querySelector('.settings-panel .sub').innerText = d.settingsSub;
-  document.querySelectorAll('.settings-section h3')[0].innerText = d.secPage;
-  document.querySelectorAll('.settings-section h3')[1].innerText = d.secCols;
-  document.querySelectorAll('.settings-section h3')[2].innerText = d.secNames;
+  const secH3 = document.querySelectorAll('.settings-section h3');
+  secH3[0].innerText = d.secDates;
+  secH3[1].innerText = d.secPage;
+  secH3[2].innerText = d.secCols;
+  secH3[3].innerText = d.secNames;
   document.getElementById('nameSearchInput').placeholder = d.namePlaceholder;
   document.getElementById('noHiddenNames').innerText = d.noHidden;
+  document.getElementById('noDatesMsg').innerText = d.noDates;
   document.querySelector('.btn-save-settings').innerText = d.saveBtn;
   document.querySelector('.btn-reset-settings').innerText = d.resetBtn;
 }
 applyLang();
 
 const CATS = [
-  {key:'induct', label:'Induct', color:'#6366f1'},
-  {key:'stow',   label:'Stow',   color:'#f59e0b'},
-  {key:'feeder', label:'Feeder', color:'#10b981'},
-  {key:'pack',   label:'Pack',   color:'#ec4899'},
+  {key:'induct',label:'Induct',color:'#6366f1'},
+  {key:'stow',label:'Stow',color:'#f59e0b'},
+  {key:'feeder',label:'Feeder',color:'#10b981'},
+  {key:'pack',label:'Pack',color:'#ec4899'},
 ];
 
 let allData = [], selectedDate = null;
 
-// --- إعدادات العرض ---
-// المفاتيح: hidePodium, hideRanks, hideScores, hideFormula, hideFutureTab,
-//           hideCol_rank, hideCol_name, hideCol_login, hideCol_level, hideCol_misssort, hideCol_fsaf, hideCol_pph, hideCol_totalpkg, hideCol_score
-//           hiddenNames: []
+// === إعدادات العرض ===
 let displaySettings = {
-  hidePodium: false,
-  hideRanks: false,
-  hideScores: false,
-  hideFormula: false,
-  hideFutureTab: false,
-  hideCol_rank: false,
-  hideCol_name: false,
-  hideCol_login: false,
-  hideCol_level: false,
-  hideCol_misssort: false,
-  hideCol_fsaf: false,
-  hideCol_pph: false,
-  hideCol_totalpkg: false,
-  hideCol_score: false,
-  hiddenNames: []
+  visibleDates: [],
+  hidePodium:false, hideRanks:false, hideScores:false,
+  hideFormula:false, hideFutureTab:false,
+  hideCol_rank:false, hideCol_name:false, hideCol_login:false,
+  hideCol_level:false, hideCol_misssort:false, hideCol_fsaf:false,
+  hideCol_pph:false, hideCol_totalpkg:false, hideCol_score:false,
+  hiddenNames:[]
 };
 
-// مفاتيح عناصر الصفحة مع التسميات
 const PAGE_ELEMENTS = [
-  { key: 'hidePodium', labelKey: 'elPodium' },
-  { key: 'hideRanks', labelKey: 'elRanks' },
-  { key: 'hideScores', labelKey: 'elScores' },
-  { key: 'hideFormula', labelKey: 'elFormula' },
-  { key: 'hideFutureTab', labelKey: 'elTabs' },
+  {key:'hidePodium',labelKey:'elPodium'},
+  {key:'hideRanks',labelKey:'elRanks'},
+  {key:'hideScores',labelKey:'elScores'},
+  {key:'hideFormula',labelKey:'elFormula'},
+  {key:'hideFutureTab',labelKey:'elTabs'},
+];
+const COL_ELEMENTS = [
+  {key:'hideCol_rank',labelKey:'colRank',dataKey:'rank'},
+  {key:'hideCol_name',labelKey:'colName',dataKey:'name'},
+  {key:'hideCol_login',labelKey:'colLogin',dataKey:'login'},
+  {key:'hideCol_level',labelKey:'colLevel',dataKey:'level'},
+  {key:'hideCol_misssort',labelKey:'colMiss',dataKey:'misssort'},
+  {key:'hideCol_fsaf',labelKey:'colFsaf',dataKey:'fsaf'},
+  {key:'hideCol_pph',labelKey:'colPph',dataKey:'pph'},
+  {key:'hideCol_totalpkg',labelKey:'colTotal',dataKey:'totalpkg'},
+  {key:'hideCol_score',labelKey:'colScore',dataKey:'score'},
 ];
 
-// مفاتيح الأعمدة مع التسميات
-const COL_ELEMENTS = [
-  { key: 'hideCol_rank', labelKey: 'colRank', dataKey: 'rank' },
-  { key: 'hideCol_name', labelKey: 'colName', dataKey: 'name' },
-  { key: 'hideCol_login', labelKey: 'colLogin', dataKey: 'login' },
-  { key: 'hideCol_level', labelKey: 'colLevel', dataKey: 'level' },
-  { key: 'hideCol_misssort', labelKey: 'colMiss', dataKey: 'misssort' },
-  { key: 'hideCol_fsaf', labelKey: 'colFsaf', dataKey: 'fsaf' },
-  { key: 'hideCol_pph', labelKey: 'colPph', dataKey: 'pph' },
-  { key: 'hideCol_totalpkg', labelKey: 'colTotal', dataKey: 'totalpkg' },
-  { key: 'hideCol_score', labelKey: 'colScore', dataKey: 'score' },
-];
+function getAllDates() {
+  return [...new Set(allData.map(r=>r.date))].filter(Boolean).sort().reverse();
+}
 
 function buildSettingsUI() {
   const d = DICT[lang];
+
+  // بناء تبديلات الأيام
+  const datesGrid = document.getElementById('datesToggleGrid');
+  datesGrid.innerHTML = '';
+  const allDates = getAllDates();
+  if (!allDates.length) {
+    datesGrid.innerHTML = `<p style="color:var(--muted);font-size:12px;" id="noDatesMsg">${d.noDates}</p>`;
+  } else {
+    // لو visibleDates فاضية نختار الكل افتراضياً
+    if (!displaySettings.visibleDates || !displaySettings.visibleDates.length) {
+      displaySettings.visibleDates = [...allDates];
+    }
+    allDates.forEach(date => {
+      const isOn = displaySettings.visibleDates.includes(date);
+      const btn = document.createElement('div');
+      btn.className = 'date-toggle' + (isOn ? ' on' : '');
+      btn.textContent = date;
+      btn.onclick = () => {
+        btn.classList.toggle('on');
+        if (btn.classList.contains('on')) {
+          if (!displaySettings.visibleDates.includes(date)) displaySettings.visibleDates.push(date);
+        } else {
+          displaySettings.visibleDates = displaySettings.visibleDates.filter(d => d !== date);
+        }
+      };
+      datesGrid.appendChild(btn);
+    });
+  }
 
   // بناء تبديلات عناصر الصفحة
   const pageContainer = document.getElementById('pageToggles');
@@ -534,11 +522,11 @@ function buildSettingsUI() {
     const isOff = displaySettings[el.key];
     const div = document.createElement('div');
     div.className = 'toggle-item' + (isOff ? ' off' : '');
-    div.innerHTML = `<div><div class="tl">${d[el.labelKey]}</div><div class="ts">${isOff ? 'مخفي' : 'ظاهر'}</div></div><div class="toggle-switch"></div>`;
+    div.innerHTML = `<div><div class="tl">${d[el.labelKey]}</div><div class="ts">${isOff?(lang==='ar'?'مخفي':'Hidden'):(lang==='ar'?'ظاهر':'Visible')}</div></div><div class="toggle-switch"></div>`;
     div.onclick = () => {
       displaySettings[el.key] = !displaySettings[el.key];
       div.classList.toggle('off');
-      div.querySelector('.ts').textContent = displaySettings[el.key] ? (lang==='ar'?'مخفي':'Hidden') : (lang==='ar'?'ظاهر':'Visible');
+      div.querySelector('.ts').textContent = displaySettings[el.key]?(lang==='ar'?'مخفي':'Hidden'):(lang==='ar'?'ظاهر':'Visible');
     };
     pageContainer.appendChild(div);
   });
@@ -550,25 +538,23 @@ function buildSettingsUI() {
     const isOff = displaySettings[el.key];
     const div = document.createElement('div');
     div.className = 'toggle-item' + (isOff ? ' off' : '');
-    div.innerHTML = `<div><div class="tl">${d[el.labelKey]}</div><div class="ts">${isOff ? 'مخفي' : 'ظاهر'}</div></div><div class="toggle-switch"></div>`;
+    div.innerHTML = `<div><div class="tl">${d[el.labelKey]}</div><div class="ts">${isOff?(lang==='ar'?'مخفي':'Hidden'):(lang==='ar'?'ظاهر':'Visible')}</div></div><div class="toggle-switch"></div>`;
     div.onclick = () => {
       displaySettings[el.key] = !displaySettings[el.key];
       div.classList.toggle('off');
-      div.querySelector('.ts').textContent = displaySettings[el.key] ? (lang==='ar'?'مخفي':'Hidden') : (lang==='ar'?'ظاهر':'Visible');
+      div.querySelector('.ts').textContent = displaySettings[el.key]?(lang==='ar'?'مخفي':'Hidden'):(lang==='ar'?'ظاهر':'Visible');
     };
     colContainer.appendChild(div);
   });
 
-  // بناء قائمة الأسماء المخفية
   renderHiddenNames();
 }
 
 function renderHiddenNames() {
   const list = document.getElementById('hiddenNamesList');
   const noMsg = document.getElementById('noHiddenNames');
-  // إزالة الشيبس القديمة
   list.querySelectorAll('.hidden-name-chip').forEach(c => c.remove());
-  if (displaySettings.hiddenNames.length === 0) {
+  if (!displaySettings.hiddenNames || !displaySettings.hiddenNames.length) {
     noMsg.style.display = 'block';
   } else {
     noMsg.style.display = 'none';
@@ -586,7 +572,6 @@ function searchNames(query) {
   if (!query.trim()) { results.classList.remove('show'); results.innerHTML=''; return; }
   const q = query.toLowerCase();
   const found = allData.filter(r => r.name.toLowerCase().includes(q) && !displaySettings.hiddenNames.includes(r.name));
-  // إزالة التكرارات
   const unique = [...new Map(found.map(r => [r.name, r])).values()].slice(0, 10);
   if (!unique.length) { results.classList.remove('show'); results.innerHTML=''; return; }
   results.innerHTML = unique.map(r => {
@@ -598,30 +583,21 @@ function searchNames(query) {
   }).join('');
   results.classList.add('show');
 }
-
 function addHiddenName(name) {
   if (!displaySettings.hiddenNames.includes(name)) {
     displaySettings.hiddenNames.push(name);
     renderHiddenNames();
     document.getElementById('nameSearchInput').value = '';
     document.getElementById('nameSearchResults').classList.remove('show');
-    document.getElementById('nameSearchResults').innerHTML = '';
   }
 }
-
 function removeHiddenName(idx) {
   displaySettings.hiddenNames.splice(idx, 1);
   renderHiddenNames();
 }
 
-function openSettings() {
-  document.getElementById('settingsOverlay').classList.add('open');
-  buildSettingsUI();
-}
-
-function closeSettings() {
-  document.getElementById('settingsOverlay').classList.remove('open');
-}
+function openSettings() { document.getElementById('settingsOverlay').classList.add('open'); buildSettingsUI(); }
+function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); }
 
 function saveSettings() {
   const btn = document.querySelector('.btn-save-settings');
@@ -637,13 +613,15 @@ function saveSettings() {
 }
 
 function resetSettings() {
+  const allDates = getAllDates();
   displaySettings = {
-    hidePodium: false, hideRanks: false, hideScores: false,
-    hideFormula: false, hideFutureTab: false,
-    hideCol_rank: false, hideCol_name: false, hideCol_login: false,
-    hideCol_level: false, hideCol_misssort: false, hideCol_fsaf: false,
-    hideCol_pph: false, hideCol_totalpkg: false, hideCol_score: false,
-    hiddenNames: []
+    visibleDates: [...allDates],
+    hidePodium:false, hideRanks:false, hideScores:false,
+    hideFormula:false, hideFutureTab:false,
+    hideCol_rank:false, hideCol_name:false, hideCol_login:false,
+    hideCol_level:false, hideCol_misssort:false, hideCol_fsaf:false,
+    hideCol_pph:false, hideCol_totalpkg:false, hideCol_score:false,
+    hiddenNames:[]
   };
   buildSettingsUI();
 }
@@ -656,7 +634,6 @@ function showToast(msg, isError) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// === روابط ===
 function getViewLink() { return location.href.replace('admin.html','viewer.html'); }
 document.getElementById('viewLinkInput').value = getViewLink();
 function copyLink() {
@@ -667,7 +644,6 @@ function copyLink() {
   });
 }
 
-// === رفع الملف ===
 const uploadBox = document.getElementById('uploadBox');
 uploadBox.addEventListener('dragover',e=>{e.preventDefault();uploadBox.classList.add('drag');});
 uploadBox.addEventListener('dragleave',()=>uploadBox.classList.remove('drag'));
@@ -681,19 +657,16 @@ function processFile(file) {
     const wb = XLSX.read(e.target.result,{type:'array'});
     const ws = wb.Sheets[wb.SheetNames[0]];
     const rows = XLSX.utils.sheet_to_json(ws,{defval:0});
-
     allData = rows.map(r => {
       const norm = {};
       for(const k in r) norm[k.toLowerCase().replace(/[-_ ]/g,'')] = r[k];
       const nameRaw = String(norm['names']||norm['name']||norm['الاسم']||'').trim();
       if(!nameRaw) return null;
-
       let dateVal = norm['date']||norm['تاريخ']||'';
       if(typeof dateVal==='number'){
         const d = new Date(Math.round((dateVal-25569)*86400*1000));
         dateVal=`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
       } else dateVal=String(dateVal).trim();
-
       const login = String(norm['login']||norm['لوقين']||'').trim();
       const catRaw = String(norm['category']||norm['cat']||norm['الفئة']||'').trim().toLowerCase();
       const level = parseInt(norm['level']||norm['لفل']||norm['lvl']||1)||1;
@@ -701,63 +674,54 @@ function processFile(file) {
       const fsaf = parseFloat(norm['fsaf']||0)||0;
       const pph = parseFloat(norm['pph']||0)||0;
       const totalpkg = parseFloat(norm['totalpkg']||norm['totalpkgs']||0)||0;
-
       const score = Math.round((100 + (misssort*-50) + (fsaf*-10) + (pph*0.1) + (totalpkg*0.02))*100)/100;
-
       let cat = 'induct';
       if(catRaw.includes('stow')) cat='stow';
       else if(catRaw.includes('feed')) cat='feeder';
       else if(catRaw.includes('pack')) cat='pack';
-
       return {date:dateVal, name:nameRaw, login, cat, level, misssort, fsaf, pph, totalpkg, score};
     }).filter(Boolean);
-
     localStorage.setItem('compData', JSON.stringify(allData));
+    // إضافة الأيام الجديدة لـ visibleDates تلقائياً
+    const newDates = getAllDates();
+    if (!displaySettings.visibleDates) displaySettings.visibleDates = [];
+    newDates.forEach(d => { if (!displaySettings.visibleDates.includes(d)) displaySettings.visibleDates.push(d); });
     buildDatePills(); render();
     document.getElementById('uploadScreen').style.display='none';
     document.getElementById('app').style.display='block';
-    document.getElementById('publishBtn').style.display = 'inline-block';
-    document.getElementById('settingsBtn').style.display = 'inline-block';
+    document.getElementById('publishBtn').style.display='inline-block';
+    document.getElementById('settingsBtn').style.display='inline-block';
   };
   reader.readAsArrayBuffer(file);
 }
 
-// نشر النتائج + الإعدادات معاً
 function publishResults() {
   const btn = document.getElementById('publishBtn');
   btn.textContent = DICT[lang].publishingMsg;
-  btn.style.opacity = '.6';
-  btn.style.pointerEvents = 'none';
-
-  // نشر البيانات والإعدادات معاً
+  btn.style.opacity='.6'; btn.style.pointerEvents='none';
   const updates = {};
   updates['competitionsData'] = allData;
   updates['displaySettings'] = displaySettings;
-  // علامة النشر
   updates['published'] = true;
   updates['publishTimestamp'] = firebase.database.ServerValue.TIMESTAMP;
-
   db.ref().update(updates).then(() => {
     showToast(DICT[lang].publishedMsg, false);
     btn.textContent = DICT[lang].publishBtnText;
-    btn.style.opacity = '1';
-    btn.style.pointerEvents = 'auto';
+    btn.style.opacity='1'; btn.style.pointerEvents='auto';
   }).catch(e => {
     showToast('Error: ' + e.message, true);
     btn.textContent = DICT[lang].publishBtnText;
-    btn.style.opacity = '1';
-    btn.style.pointerEvents = 'auto';
+    btn.style.opacity='1'; btn.style.pointerEvents='auto';
   });
 }
 
+// بناء أزرار الأيام — بدون زر "الكل"
 function buildDatePills(){
-  const dates=[...new Set(allData.map(r=>r.date))].filter(Boolean).sort().reverse();
-  selectedDate=dates[0]||null;
-  const c=document.getElementById('datePills'); c.innerHTML='';
-  const allBtn=mkPill(DICT[lang].all,false,()=>{selectedDate=null;setActive(allBtn);render();});
-  c.appendChild(allBtn);
-  dates.forEach(d=>{
-    const btn=mkPill(d,d===selectedDate,()=>{selectedDate=d;setActive(btn);render();});
+  const dates = getAllDates();
+  selectedDate = dates[0] || null;
+  const c = document.getElementById('datePills'); c.innerHTML='';
+  dates.forEach((d,i) => {
+    const btn = mkPill(d, i===0, () => { selectedDate=d; setActive(btn); render(); });
     c.appendChild(btn);
   });
 }
@@ -772,85 +736,49 @@ function switchTab(tab){
 }
 
 function render(){
-  const fd=selectedDate?allData.filter(r=>r.date===selectedDate):allData;
+  const fd = selectedDate ? allData.filter(r=>r.date===selectedDate) : allData;
   renderAll(fd);
   renderFuture(fd);
 }
 
-// دالة مساعدة: هل الاسم مخفي؟
-function isNameHidden(name) {
-  return displaySettings.hiddenNames.includes(name);
-}
-
-// دالة مساعدة: هل العمود مخفي؟
-function isColHidden(dataKey) {
-  return displaySettings['hideCol_' + dataKey] || false;
-}
+function isNameHidden(name){ return displaySettings.hiddenNames && displaySettings.hiddenNames.includes(name); }
+function isColHidden(dataKey){ return displaySettings['hideCol_'+dataKey] || false; }
 
 function renderAll(data){
   const page = document.getElementById('pageAll'); page.innerHTML='';
   if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
-
   CATS.forEach(cat => {
-    let rows = data.filter(r => r.cat === cat.key && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
+    let rows = data.filter(r=>r.cat===cat.key && !isNameHidden(r.name)).sort((a,b)=>b.score-a.score);
     if(!rows.length) return;
-    
     const top3 = rows.slice(0,3);
     const sec = document.createElement('div'); sec.className='cat-section';
-    sec.innerHTML = `<div class="cat-label">
-      <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
-      <span class="wnote">${DICT[lang].noteAll}</span></div>`;
-    
-    // المنصة - يمكن إخفاؤها
-    if (!displaySettings.hidePodium) {
-      sec.appendChild(buildPodium(top3, cat));
-    }
-
-    // بناء الأعمدة ديناميكياً حسب الإعدادات
+    sec.innerHTML = `<div class="cat-label"><div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2><span class="wnote">${DICT[lang].noteAll}</span></div>`;
+    if(!displaySettings.hidePodium) sec.appendChild(buildPodium(top3,cat));
     const colDefs = [
-      { key:'rank', header: DICT[lang].thRank },
-      { key:'name', header: DICT[lang].thName },
-      { key:'login', header: DICT[lang].thLogin },
-      { key:'level', header: DICT[lang].thLevel },
-      { key:'misssort', header: DICT[lang].thMiss },
-      { key:'fsaf', header: DICT[lang].thFsaf },
-      { key:'pph', header: DICT[lang].thPph },
-      { key:'totalpkg', header: DICT[lang].thTotal },
-      { key:'score', header: DICT[lang].thScore },
+      {key:'rank',header:DICT[lang].thRank},{key:'name',header:DICT[lang].thName},
+      {key:'login',header:DICT[lang].thLogin},{key:'level',header:DICT[lang].thLevel},
+      {key:'misssort',header:DICT[lang].thMiss},{key:'fsaf',header:DICT[lang].thFsaf},
+      {key:'pph',header:DICT[lang].thPph},{key:'totalpkg',header:DICT[lang].thTotal},
+      {key:'score',header:DICT[lang].thScore},
     ];
-
-    // إخفاء المراكز والنقاط من الجدول أيضاً
-    const visibleCols = colDefs.filter(c => !isColHidden(c.key));
-
-    const wrap = document.createElement('div'); wrap.className = 'all-table-wrap';
-    wrap.innerHTML = `<table>
-      <thead><tr>${visibleCols.map(c=>`<th>${c.header}</th>`).join('')}</tr></thead>
-      <tbody>${rows.map((p,i) => {
-        const cells = [];
-        visibleCols.forEach(c => {
-          if(c.key==='rank') {
-            cells.push(`<td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>`);
-          } else if(c.key==='name') {
-            cells.push(`<td style="font-weight:700">${p.name}</td>`);
-          } else if(c.key==='login') {
-            cells.push(`<td style="color:var(--muted);font-size:13px">${p.login||'—'}</td>`);
-          } else if(c.key==='level') {
-            cells.push(`<td><span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></td>`);
-          } else if(c.key==='misssort') {
-            cells.push(`<td style="color:${p.misssort>0?'var(--red)':'var(--muted)'}">${p.misssort}</td>`);
-          } else if(c.key==='fsaf') {
-            cells.push(`<td style="color:${p.fsaf>0?'var(--red)':'var(--muted)'}">${p.fsaf}</td>`);
-          } else if(c.key==='pph') {
-            cells.push(`<td>${p.pph}</td>`);
-          } else if(c.key==='totalpkg') {
-            cells.push(`<td>${p.totalpkg}</td>`);
-          } else if(c.key==='score') {
-            cells.push(`<td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td>`);
-          }
-        });
-        return `<tr>${cells.join('')}</tr>`;
-      }).join('')}</tbody>
-    </table>`;
+    const visibleCols = colDefs.filter(c=>!isColHidden(c.key));
+    const wrap = document.createElement('div'); wrap.className='all-table-wrap';
+    wrap.innerHTML = `<table><thead><tr>${visibleCols.map(c=>`<th>${c.header}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map((p,i)=>{
+      const cells=[];
+      visibleCols.forEach(c=>{
+        if(c.key==='rank') cells.push(`<td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>`);
+        else if(c.key==='name') cells.push(`<td style="font-weight:700">${p.name}</td>`);
+        else if(c.key==='login') cells.push(`<td style="color:var(--muted);font-size:13px">${p.login||'—'}</td>`);
+        else if(c.key==='level') cells.push(`<td><span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></td>`);
+        else if(c.key==='misssort') cells.push(`<td style="color:${p.misssort>0?'var(--red)':'var(--muted)'}">${p.misssort}</td>`);
+        else if(c.key==='fsaf') cells.push(`<td style="color:${p.fsaf>0?'var(--red)':'var(--muted)'}">${p.fsaf}</td>`);
+        else if(c.key==='pph') cells.push(`<td>${p.pph}</td>`);
+        else if(c.key==='totalpkg') cells.push(`<td>${p.totalpkg}</td>`);
+        else if(c.key==='score') cells.push(`<td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td>`);
+      });
+      return `<tr>${cells.join('')}</tr>`;
+    }).join('')}</tbody></table>`;
     sec.appendChild(wrap);
     page.appendChild(sec);
   });
@@ -860,29 +788,20 @@ function renderAll(data){
 function renderFuture(data){
   const page = document.getElementById('pageFuture'); page.innerHTML='';
   if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
-
   CATS.forEach(cat => {
-    let lvl1 = data.filter(r => r.cat === cat.key && r.level === 1 && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
-    let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2 && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
-    
-    let futureWinners = [lvl1[0], lvl2[0], lvl1[1]]; 
-    
-    if(!futureWinners.some(Boolean)) return; 
-
+    let lvl1 = data.filter(r=>r.cat===cat.key&&r.level===1&&!isNameHidden(r.name)).sort((a,b)=>b.score-a.score);
+    let lvl2 = data.filter(r=>r.cat===cat.key&&r.level===2&&!isNameHidden(r.name)).sort((a,b)=>b.score-a.score);
+    let futureWinners = [lvl1[0],lvl2[0],lvl1[1]];
+    if(!futureWinners.some(Boolean)) return;
     const sec = document.createElement('div'); sec.className='cat-section';
-    sec.innerHTML = `<div class="cat-label">
-      <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
-      <span class="wnote">${DICT[lang].noteFuture}</span></div>`;
-    
-    if (!displaySettings.hidePodium) {
-      sec.appendChild(buildPodium(futureWinners, cat, true));
-    }
+    sec.innerHTML = `<div class="cat-label"><div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2><span class="wnote">${DICT[lang].noteFuture}</span></div>`;
+    if(!displaySettings.hidePodium) sec.appendChild(buildPodium(futureWinners,cat,true));
     page.appendChild(sec);
   });
   if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
 }
 
-function buildPodium(players, cat, isFuture=false){
+function buildPodium(players,cat,isFuture=false){
   const order=[players[1],players[0],players[2]];
   const posC=['p2','p1','p3'],crowns=['🥈','🥇','🥉'],bases=['2','1','3'];
   const wrap=document.createElement('div');wrap.className='podium-wrap';
@@ -903,11 +822,12 @@ function buildPodium(players, cat, isFuture=false){
   return wrap;
 }
 
-// تحميل الإعدادات المحفوظة من Firebase عند البدء
+// تحميل الإعدادات المحفوظة
 db.ref('displaySettings').once('value', (snap) => {
   if (snap.val()) {
     displaySettings = snap.val();
     if (!displaySettings.hiddenNames) displaySettings.hiddenNames = [];
+    if (!displaySettings.visibleDates) displaySettings.visibleDates = [];
   }
 });
 
@@ -917,17 +837,20 @@ window.onload=()=>{
     try{
       allData=JSON.parse(saved);
       if(allData.length){
+        // مزج الأيام الجديدة مع المختارة
+        const newDates = getAllDates();
+        if (!displaySettings.visibleDates) displaySettings.visibleDates = [];
+        newDates.forEach(d => { if (!displaySettings.visibleDates.includes(d)) displaySettings.visibleDates.push(d); });
         buildDatePills(); render();
         document.getElementById('uploadScreen').style.display='none';
         document.getElementById('app').style.display='block';
-        document.getElementById('publishBtn').style.display = 'inline-block';
-        document.getElementById('settingsBtn').style.display = 'inline-block';
+        document.getElementById('publishBtn').style.display='inline-block';
+        document.getElementById('settingsBtn').style.display='inline-block';
       }
     }catch(e){}
   }
 };
 
-// إغلاق قائمة البحث عند الضغط خارجها
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.name-search-input') && !e.target.closest('.name-search-results')) {
     document.getElementById('nameSearchResults').classList.remove('show');
