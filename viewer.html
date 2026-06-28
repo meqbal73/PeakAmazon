@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Viewer Screen</title>
-<!-- Firebase -->
+<!-- مكتبات Firebase المضافة -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
@@ -19,6 +19,14 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+/* شاشة العد التنازلي المضافة */
+#countdownOverlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(7, 9, 15, 0.95); z-index: 9999;
+  display: none; align-items: center; justify-content: center;
+  font-size: 150px; font-weight: 900; color: var(--gold);
+}
 
 /* NO DATA */
 #noDataScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:32px;}
@@ -40,13 +48,16 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 .dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;}
 .dpill.active{background:var(--accent);border-color:var(--accent);color:white;}
 
-.page{padding:24px;}
+.tabs{display:flex;padding:18px 24px 0;gap:8px;}
+.tab{padding:9px 24px;border-radius:12px 12px 0 0;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);border-bottom:none;background:var(--panel2);color:var(--muted);}
+.tab.active{background:rgba(255,215,0,.08);border-color:var(--gold);color:var(--gold);}
+
+.page{display:none;border-top:2px solid var(--border);padding:24px; border-top-color:var(--gold);}
+.page.active{display:block;}
 
 .formula-strip{margin:0 24px 18px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 16px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px;}
 .formula-strip .ftitle{color:var(--red);font-weight:900;}
 .neg{color:#ef4444;font-weight:700; background:rgba(239,68,68,.1); padding:2px 8px; border-radius:6px;}
-
-.up-btn{background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;padding:10px 28px;border-radius:10px;color:white;font-size:15px;font-weight:700;cursor:pointer;}
 
 /* Category sections & Podium */
 .cat-section{margin-bottom:46px;}
@@ -100,6 +111,9 @@ td{padding:10px 14px;white-space:nowrap;}
 </head>
 <body>
 
+<!-- شاشة العد التنازلي -->
+<div id="countdownOverlay"></div>
+
 <div id="noDataScreen">
   <div class="big">⏳</div>
   <h2 class="t-wait-title">في انتظار البيانات</h2>
@@ -129,7 +143,13 @@ td{padding:10px 14px;white-space:nowrap;}
     <span class="neg">FSAF: -10</span>
   </div>
 
-  <div class="page" id="pageAll" style="display:block;"></div>
+  <div class="tabs">
+    <div class="tab active t-tab-all" onclick="switchTab('all')">📋 جميع المتسابقين</div>
+    <div class="tab t-tab-future" onclick="switchTab('future')">🌟 فائزين فيوتشر</div>
+  </div>
+
+  <div class="page active" id="pageAll"></div>
+  <div class="page" id="pageFuture"></div>
 </div>
 
 <script>
@@ -146,6 +166,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// --- I18N DICTIONARY ---
 const DICT = {
   ar: {
     title: 'لوحة <span style="color:var(--gold)">المسابقات</span>',
@@ -153,9 +174,13 @@ const DICT = {
     waitTitle: 'في انتظار البيانات',
     waitSub: 'سيظهر هنا تلقائياً بمجرد رفع الإدارة للملف',
     calc: '🔻 الخصومات:',
+    tabAll: '📋 جميع المتسابقين',
+    tabFuture: '🌟 فائزين فيوتشر',
+    all: 'الكل',
     empty: 'لا توجد بيانات',
     pt: 'نقطة',
-    revealBtn: '🌟 إظهار فائزين فيوتشر',
+    noteAll: '🏅 أعلى 3 مراكز',
+    noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
     // Table Headers
     thRank: '#', thName: 'الاسم', thLogin: 'Login', thLevel: 'Level',
     thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'النقاط'
@@ -166,9 +191,13 @@ const DICT = {
     waitTitle: 'Waiting for Data',
     waitSub: 'Will appear here automatically once Admin uploads the file',
     calc: '🔻 Deductions:',
+    tabAll: '📋 All Contestants',
+    tabFuture: '🌟 Future Winners',
+    all: 'All',
     empty: 'No Data Found',
     pt: 'pt',
-    revealBtn: '🌟 Reveal Future Winners',
+    noteAll: '🏅 Top 3 Positions',
+    noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
     // Table Headers
     thRank: '#', thName: 'Name', thLogin: 'Login', thLevel: 'Level',
     thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'Score'
@@ -192,6 +221,8 @@ function applyLang() {
   document.querySelector('.t-wait-title').innerText=d.waitTitle;
   document.querySelector('.t-wait-sub').innerText=d.waitSub;
   document.querySelector('.t-calc').innerText=d.calc;
+  document.querySelector('.t-tab-all').innerText=d.tabAll;
+  document.querySelector('.t-tab-future').innerText=d.tabFuture;
 }
 applyLang();
 
@@ -206,10 +237,10 @@ let allData = [], selectedDate = null;
 
 function buildDatePills(){
   const dates=[...new Set(allData.map(r=>r.date))].filter(Boolean).sort().reverse();
-  // تحديد أحدث تاريخ تلقائياً
-  if(!selectedDate || !dates.includes(selectedDate)) selectedDate = dates[0] || null;
-  
+  selectedDate=dates[0]||null;
   const c=document.getElementById('datePills'); c.innerHTML='';
+  const allBtn=mkPill(DICT[lang].all,false,()=>{selectedDate=null;setActive(allBtn);render();});
+  c.appendChild(allBtn);
   dates.forEach(d=>{
     const btn=mkPill(d,d===selectedDate,()=>{selectedDate=d;setActive(btn);render();});
     c.appendChild(btn);
@@ -218,59 +249,34 @@ function buildDatePills(){
 function mkPill(t,a,fn){const b=document.createElement('button');b.className='dpill'+(a?' active':'');b.textContent=t;b.onclick=fn;return b;}
 function setActive(el){document.querySelectorAll('.dpill').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
 
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.t-tab-'+tab).classList.add('active');
+  document.getElementById('page'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
+}
+
 function render(){
   const fd=selectedDate?allData.filter(r=>r.date===selectedDate):allData;
+  renderAll(fd);
+  renderFuture(fd);
+}
+
+function renderAll(data){
   const page = document.getElementById('pageAll'); page.innerHTML='';
-  if(!fd.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
+  if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
 
   CATS.forEach(cat => {
-    let rows = fd.filter(r => r.cat === cat.key).sort((a,b) => b.score - a.score);
+    let rows = data.filter(r => r.cat === cat.key).sort((a,b) => b.score - a.score);
     if(!rows.length) return;
     
+    const top3 = rows.slice(0,3);
     const sec = document.createElement('div'); sec.className='cat-section';
-    sec.innerHTML = `<div class="cat-label"><div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2></div>`;
+    sec.innerHTML = `<div class="cat-label">
+      <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
+      <span class="wnote">${DICT[lang].noteAll}</span></div>`;
     
-    // إعداد فائزين الفيوتشر لهذه الفئة
-    let lvl1 = fd.filter(r => r.cat === cat.key && r.level === 1).sort((a,b) => b.score - a.score);
-    let lvl2 = fd.filter(r => r.cat === cat.key && r.level === 2).sort((a,b) => b.score - a.score);
-    let futureWinners = [lvl1[0], lvl2[0], lvl1[1]]; 
-    
-    if(futureWinners.some(Boolean)) {
-        const futureWrap = document.createElement('div');
-        futureWrap.style.minHeight = '180px';
-        futureWrap.style.display = 'flex';
-        futureWrap.style.justifyContent = 'center';
-        futureWrap.style.alignItems = 'center';
-        futureWrap.style.marginBottom = '20px';
-
-        const revealBtn = document.createElement('button');
-        revealBtn.className = 'up-btn';
-        revealBtn.style.background = 'linear-gradient(135deg, #ff4d6d, #ff758f)';
-        revealBtn.style.padding = '12px 30px';
-        revealBtn.style.fontSize = '16px';
-        revealBtn.innerHTML = DICT[lang].revealBtn;
-        
-        revealBtn.onclick = () => {
-            revealBtn.disabled = true;
-            let cnt = 3;
-            revealBtn.innerText = cnt;
-            revealBtn.style.fontSize = '24px';
-            revealBtn.style.fontWeight = '900';
-            const iv = setInterval(() => {
-                cnt--;
-                if(cnt > 0) revealBtn.innerText = cnt;
-                else {
-                    clearInterval(iv);
-                    revealBtn.style.display = 'none';
-                    futureWrap.style.alignItems = 'flex-end'; // تعديل للبوديوم
-                    const podium = buildPodium(futureWinners, cat, true);
-                    futureWrap.appendChild(podium);
-                }
-            }, 1000);
-        };
-        futureWrap.appendChild(revealBtn);
-        sec.appendChild(futureWrap);
-    }
+    sec.appendChild(buildPodium(top3, cat));
 
     const wrap = document.createElement('div'); wrap.className = 'all-table-wrap';
     wrap.innerHTML = `<table>
@@ -305,6 +311,29 @@ function render(){
   if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
 }
 
+function renderFuture(data){
+  const page = document.getElementById('pageFuture'); page.innerHTML='';
+  if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
+
+  CATS.forEach(cat => {
+    let lvl1 = data.filter(r => r.cat === cat.key && r.level === 1).sort((a,b) => b.score - a.score);
+    let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2).sort((a,b) => b.score - a.score);
+    
+    let futureWinners = [lvl1[0], lvl2[0], lvl1[1]]; 
+    
+    if(!futureWinners.some(Boolean)) return; 
+
+    const sec = document.createElement('div'); sec.className='cat-section';
+    sec.innerHTML = `<div class="cat-label">
+      <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
+      <span class="wnote">${DICT[lang].noteFuture}</span></div>`;
+    
+    sec.appendChild(buildPodium(futureWinners, cat, true));
+    page.appendChild(sec);
+  });
+  if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
+}
+
 function buildPodium(players, cat, isFuture=false){
   const order=[players[1],players[0],players[2]];
   const posC=['p2','p1','p3'],crowns=['🥈','🥇','🥉'],bases=['2','1','3'];
@@ -327,15 +356,32 @@ function buildPodium(players, cat, isFuture=false){
   return wrap;
 }
 
-// تحميل البيانات مباشرة بدون عد تنازلي مزعج
+// الاستماع للبيانات من Firebase بدلاً من LocalStorage
 db.ref('competitionsData').on('value', (snapshot) => {
     const data = snapshot.val();
     if(data && data.length > 0) {
-        allData = data;
-        buildDatePills(); 
-        render();
-        document.getElementById('noDataScreen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
+        const overlay = document.getElementById('countdownOverlay');
+        overlay.style.display = 'flex';
+        let count = 3;
+        overlay.innerText = count;
+        
+        const interval = setInterval(() => {
+            count--;
+            if(count > 0) {
+                overlay.innerText = count;
+            } else {
+                clearInterval(interval);
+                overlay.innerText = "GO! 🎉";
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    allData = data;
+                    buildDatePills(); 
+                    render();
+                    document.getElementById('noDataScreen').style.display = 'none';
+                    document.getElementById('app').style.display = 'block';
+                }, 800);
+            }
+        }, 1000);
     }
 });
 </script>
