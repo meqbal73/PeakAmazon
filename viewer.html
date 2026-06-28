@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة المسابقات</title>
+<title>Viewer Screen</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
 :root {
@@ -14,6 +14,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
 /* NO DATA */
 #noDataScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:32px;}
@@ -23,44 +24,36 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 
 /* APP */
 #app{display:none;}
-.top-bar{background:linear-gradient(180deg,#0d1520 0%,transparent 100%);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.top-bar{background:linear-gradient(180deg,#0d1520 0%,transparent 100%);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
 .logo{display:flex;align-items:center;gap:10px;}
-.logo .ic{font-size:24px;filter:drop-shadow(0 0 10px #ffd70066);}
+.logo .ic{font-size:24px;}
 .logo h1{font-size:18px;font-weight:900;}
-.logo h1 em{color:var(--gold);font-style:normal;}
 .view-badge{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:var(--green);font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;}
-.date-badge{background:var(--panel);border:1px solid var(--border);padding:5px 14px;border-radius:20px;font-size:13px;color:var(--muted);}
+.top-right {display:flex; align-items:center; gap:10px;}
+.lang-btn { background: rgba(255,215,0,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 5px 14px; border-radius: 20px; font-weight: 700; cursor: pointer;}
 
 .date-row{padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:var(--panel);}
-.dlabel{color:var(--muted);font-size:13px;}
-.dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Tajawal',sans-serif;transition:all .15s;}
-.dpill:hover{border-color:var(--accent);color:var(--text);}
+.dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;}
 .dpill.active{background:var(--accent);border-color:var(--accent);color:white;}
 
 .tabs{display:flex;padding:18px 24px 0;gap:8px;}
-.tab{padding:9px 24px;border-radius:12px 12px 0 0;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);border-bottom:none;background:var(--panel2);color:var(--muted);transition:all .2s;}
-.tab.future-tab.active{background:rgba(255,77,109,.1);border-color:var(--future);color:var(--future);}
-.tab.regular-tab.active{background:rgba(96,165,250,.1);border-color:var(--regular);color:var(--regular);}
-.tab.all-tab.active{background:rgba(255,215,0,.08);border-color:var(--gold);color:var(--gold);}
-.tab:not(.active):hover{color:var(--text);}
+.tab{padding:9px 24px;border-radius:12px 12px 0 0;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);border-bottom:none;background:var(--panel2);color:var(--muted);}
+.tab.active{background:rgba(255,215,0,.08);border-color:var(--gold);color:var(--gold);}
 
-.page{display:none;border-top:2px solid var(--border);padding:24px;}
-.page.future-page{border-top-color:var(--future);}
-.page.regular-page{border-top-color:var(--regular);}
-.page.all-page{border-top-color:var(--gold);}
+.page{display:none;border-top:2px solid var(--border);padding:24px; border-top-color:var(--gold);}
 .page.active{display:block;}
 
 .formula-strip{margin:0 24px 18px;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:10px 16px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px;}
 .formula-strip .ftitle{color:var(--muted);font-weight:700;}
 .neg{color:#ef4444;font-weight:700;}.pos{color:#22c55e;font-weight:700;}.base{color:var(--gold);font-weight:700;}
 
+/* Category sections & Podium */
 .cat-section{margin-bottom:36px;}
 .cat-label{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .cat-dot{width:10px;height:10px;border-radius:50%;}
 .cat-label h2{font-size:17px;font-weight:900;}
-.wnote{margin-right:auto;font-size:12px;padding:3px 12px;border-radius:20px;font-weight:700;}
-.future-page .wnote{background:rgba(255,77,109,.1);color:var(--future);border:1px solid var(--future);}
-.regular-page .wnote{background:rgba(96,165,250,.1);color:var(--regular);border:1px solid var(--regular);}
+.wnote{font-size:12px;padding:3px 12px;border-radius:20px;font-weight:700;background:rgba(255,215,0,.1);color:var(--gold);border:1px solid var(--gold);}
+html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-left: auto; }
 
 .podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:16px;padding:0 4px;}
 .podium-player{flex:1;max-width:190px;display:flex;flex-direction:column;align-items:center;}
@@ -78,36 +71,23 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 .pod-score{font-size:18px;font-weight:900;}
 .p1 .pod-score{color:var(--gold);}.p2 .pod-score{color:var(--silver);}.p3 .pod-score{color:var(--bronze);}
 .pod-score-lbl{font-size:10px;color:var(--muted);}
-.pod-wbadge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;letter-spacing:.5px;}
-.future-page .pod-wbadge{background:rgba(255,77,109,.15);color:var(--future);border:1px solid var(--future);}
-.regular-page .pod-wbadge{background:rgba(96,165,250,.15);color:var(--regular);border:1px solid var(--regular);}
 .pod-base{width:100%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;border-radius:0 0 8px 8px;}
 .p1 .pod-base{height:74px;background:linear-gradient(180deg,#ffd700,#b8860b);color:#000;font-size:30px;}
 .p2 .pod-base{height:52px;background:linear-gradient(180deg,#c0c0c0,#808080);color:#000;}
 .p3 .pod-base{height:36px;background:linear-gradient(180deg,#cd7f32,#8b4513);color:#000;}
 
 .rest-list{display:flex;flex-direction:column;gap:5px;}
-.rest-row{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:9px 14px;transition:background .15s;}
-.rest-row:hover{background:#1a2540;}
+.rest-row{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:9px 14px;}
 .rest-rank{font-size:13px;font-weight:700;color:var(--muted);min-width:22px;text-align:center;}
 .rest-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
 .rest-info{flex:1;}
 .rest-name{font-size:13px;font-weight:700;}
 .rest-login{font-size:11px;color:var(--muted);}
 .rest-score{font-size:14px;font-weight:900;}
+.lvl-badge {font-size:9px; padding:2px 6px; border-radius:6px; margin-top:3px; display:inline-block;}
+.lvl1 {background:rgba(255,77,109,.15); color:var(--future); border:1px solid var(--future);}
+.lvl2 {background:rgba(96,165,250,.15); color:var(--regular); border:1px solid var(--regular);}
 
-.all-table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:14px;}
-thead tr{background:var(--panel2);border-bottom:2px solid var(--border);}
-thead th{padding:10px 14px;text-align:right;font-weight:700;color:var(--muted);font-size:12px;white-space:nowrap;}
-tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .12s;}
-tbody tr:hover{background:rgba(255,255,255,.03);}
-td{padding:10px 14px;white-space:nowrap;}
-.rank-td{font-weight:900;font-size:15px;text-align:center;}
-.lvl-badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700;}
-.lvl1{background:rgba(255,77,109,.12);color:var(--future);border:1px solid rgba(255,77,109,.3);}
-.lvl2{background:rgba(96,165,250,.12);color:var(--regular);border:1px solid rgba(96,165,250,.3);}
-.score-td{font-weight:900;font-size:15px;}
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
@@ -118,28 +98,30 @@ td{padding:10px 14px;white-space:nowrap;}
 
 <div id="noDataScreen">
   <div class="big">⏳</div>
-  <h2>في انتظار البيانات</h2>
-  <p>سيظهر هنا تلقائياً بمجرد رفع الإدارة للملف</p>
+  <h2 class="t-wait-title">في انتظار البيانات</h2>
+  <p class="t-wait-sub">سيظهر هنا تلقائياً بمجرد رفع الإدارة للملف</p>
 </div>
 
 <div id="app">
   <div class="top-bar">
     <div class="logo">
       <span class="ic">🏆</span>
-      <h1>لوحة <em>المسابقات</em></h1>
-      <span class="view-badge">👁 مشاهدة فقط</span>
+      <h1 class="t-title">لوحة <span style="color:var(--gold)">المسابقات</span></h1>
+      <span class="view-badge t-view-lbl">👁 مشاهدة فقط</span>
     </div>
-    <div class="date-badge" id="headerDate">—</div>
+    <div class="top-right">
+      <button class="lang-btn" onclick="toggleLang()">🌐 EN / AR</button>
+    </div>
   </div>
 
   <div class="date-row">
-    <span class="dlabel">📅</span>
+    <span style="font-size:18px">📅</span>
     <div id="datePills"></div>
   </div>
 
   <div class="formula-strip">
-    <span class="ftitle">⚙️ الحسبة:</span>
-    <span class="base">100 أساس</span>
+    <span class="ftitle t-calc">⚙️ الحسبة:</span>
+    <span class="base">100 Base</span>
     <span class="neg">Miss-sort × −50</span>
     <span class="neg">FSAF × −10</span>
     <span class="pos">PPH × 0.1</span>
@@ -147,103 +129,183 @@ td{padding:10px 14px;white-space:nowrap;}
   </div>
 
   <div class="tabs">
-    <div class="tab future-tab active" onclick="switchTab('future')">🔴 Future (Level 1)</div>
-    <div class="tab regular-tab" onclick="switchTab('regular')">⚪ Regular (Level 2)</div>
-    <div class="tab all-tab" onclick="switchTab('all')">📋 جميع المتسابقين</div>
+    <div class="tab active t-tab-all" onclick="switchTab('all')">📋 جميع المتسابقين</div>
+    <div class="tab t-tab-future" onclick="switchTab('future')">🌟 فائزين فيوتشر</div>
   </div>
 
-  <div class="page future-page active" id="pageFuture"></div>
-  <div class="page regular-page" id="pageRegular"></div>
-  <div class="page all-page" id="pageAll"></div>
+  <div class="page active" id="pageAll"></div>
+  <div class="page" id="pageFuture"></div>
 </div>
 
 <script>
-const CATS=[
-  {key:'induct',label:'Induct',color:'#6366f1',futureW:2,regularW:1},
-  {key:'stow',label:'Stow',color:'#f59e0b',futureW:1,regularW:1},
-  {key:'feeder',label:'Feeder',color:'#10b981',futureW:1,regularW:1},
-  {key:'pack',label:'Pack to Buffer',color:'#ec4899',futureW:1,regularW:1},
-];
-let allData=[],selectedDate=null;
+// --- I18N DICTIONARY ---
+const DICT = {
+  ar: {
+    title: 'لوحة <span style="color:var(--gold)">المسابقات</span>',
+    viewLbl: '👁 مشاهدة فقط',
+    waitTitle: 'في انتظار البيانات',
+    waitSub: 'سيظهر هنا تلقائياً بمجرد رفع الإدارة للملف',
+    calc: '⚙️ الحسبة:',
+    tabAll: '📋 جميع المتسابقين',
+    tabFuture: '🌟 فائزين فيوتشر',
+    all: 'الكل',
+    empty: 'لا توجد بيانات',
+    pt: 'نقطة',
+    noteAll: '🏅 أعلى 3 مراكز',
+    noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)'
+  },
+  en: {
+    title: 'Competitions <span style="color:var(--gold)">Dashboard</span>',
+    viewLbl: '👁 Viewer Only',
+    waitTitle: 'Waiting for Data',
+    waitSub: 'Will appear here automatically once Admin uploads the file',
+    calc: '⚙️ Formula:',
+    tabAll: '📋 All Contestants',
+    tabFuture: '🌟 Future Winners',
+    all: 'All',
+    empty: 'No Data Found',
+    pt: 'pt',
+    noteAll: '🏅 Top 3 Positions',
+    noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)'
+  }
+};
 
-function switchTab(tab){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelector('.'+tab+'-tab').classList.add('active');
-  document.getElementById('page'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
+let lang = localStorage.getItem('compLang') || 'ar';
+function toggleLang() {
+  lang = lang === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('compLang', lang);
+  applyLang();
+  if(allData.length) { buildDatePills(); render(); }
 }
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const d = DICT[lang];
+  document.querySelectorAll('.t-title').forEach(e=>e.innerHTML=d.title);
+  document.querySelector('.t-view-lbl').innerText=d.viewLbl;
+  document.querySelector('.t-wait-title').innerText=d.waitTitle;
+  document.querySelector('.t-wait-sub').innerText=d.waitSub;
+  document.querySelector('.t-calc').innerText=d.calc;
+  document.querySelector('.t-tab-all').innerText=d.tabAll;
+  document.querySelector('.t-tab-future').innerText=d.tabFuture;
+}
+applyLang();
+
+const CATS = [
+  {key:'induct', label:'Induct', color:'#6366f1'},
+  {key:'stow',   label:'Stow',   color:'#f59e0b'},
+  {key:'feeder', label:'Feeder', color:'#10b981'},
+  {key:'pack',   label:'Pack',   color:'#ec4899'},
+];
+
+let allData = [], selectedDate = null;
 
 function buildDatePills(){
   const dates=[...new Set(allData.map(r=>r.date))].filter(Boolean).sort().reverse();
   selectedDate=dates[0]||null;
-  const c=document.getElementById('datePills');c.innerHTML='';
-  const allBtn=mkPill('الكل',false,()=>{selectedDate=null;setActive(allBtn);render();});
+  const c=document.getElementById('datePills'); c.innerHTML='';
+  const allBtn=mkPill(DICT[lang].all,false,()=>{selectedDate=null;setActive(allBtn);render();});
   c.appendChild(allBtn);
-  dates.forEach(d=>{const btn=mkPill(d,d===selectedDate,()=>{selectedDate=d;setActive(btn);render();});c.appendChild(btn);});
-  document.getElementById('headerDate').textContent=selectedDate||'جميع الأيام';
+  dates.forEach(d=>{
+    const btn=mkPill(d,d===selectedDate,()=>{selectedDate=d;setActive(btn);render();});
+    c.appendChild(btn);
+  });
 }
 function mkPill(t,a,fn){const b=document.createElement('button');b.className='dpill'+(a?' active':'');b.textContent=t;b.onclick=fn;return b;}
-function setActive(el){document.querySelectorAll('.dpill').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('headerDate').textContent=selectedDate||'جميع الأيام';}
+function setActive(el){document.querySelectorAll('.dpill').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.t-tab-'+tab).classList.add('active');
+  document.getElementById('page'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
+}
 
 function render(){
   const fd=selectedDate?allData.filter(r=>r.date===selectedDate):allData;
-  renderCatPage(fd.filter(r=>r.level===1),'pageFuture','future');
-  renderCatPage(fd.filter(r=>r.level===2),'pageRegular','regular');
-  renderAllTable(fd);
+  renderAll(fd);
+  renderFuture(fd);
 }
 
-function renderCatPage(data,pageId,type){
-  const page=document.getElementById(pageId);page.innerHTML='';
-  if(!data.length){page.innerHTML='<div class="empty">لا توجد بيانات</div>';return;}
-  CATS.forEach(cat=>{
-    let rows=data.filter(r=>r.cat===cat.key).sort((a,b)=>b.score-a.score);
-    if(!rows.length)return;
-    const top5=rows.slice(0,5);
-    const wCount=type==='future'?cat.futureW:cat.regularW;
-    const sec=document.createElement('div');sec.className='cat-section';
-    sec.innerHTML=`<div class="cat-label"><div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2><span class="wnote">🏅 أول ${wCount===1?'مركز':wCount+' مراكز'} فائزة</span></div>`;
-    sec.appendChild(buildPodium(top5.slice(0,3),cat,wCount,type));
-    if(top5.length>3){
-      const rl=document.createElement('div');rl.className='rest-list';
-      top5.slice(3).forEach((p,i)=>{
-        const ri=document.createElement('div');ri.className='rest-row';
-        const init=p.name.split(/[ ,]/).map(w=>w[0]).slice(0,2).join('');
-        ri.innerHTML=`<span class="rest-rank">${i+4}</span><div class="rest-avatar" style="background:${cat.color}22;color:${cat.color}">${init||'?'}</div><div class="rest-info"><div class="rest-name">${p.name}</div><div class="rest-login">${p.login||'—'}</div></div><span class="rest-score" style="color:${cat.color}">${p.score.toFixed(2)}</span>`;
+function renderAll(data){
+  const page = document.getElementById('pageAll'); page.innerHTML='';
+  if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
+
+  CATS.forEach(cat => {
+    let rows = data.filter(r => r.cat === cat.key).sort((a,b) => b.score - a.score);
+    if(!rows.length) return;
+    
+    const top3 = rows.slice(0,3);
+    const sec = document.createElement('div'); sec.className='cat-section';
+    sec.innerHTML = `<div class="cat-label">
+      <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
+      <span class="wnote">${DICT[lang].noteAll}</span></div>`;
+    
+    sec.appendChild(buildPodium(top3, cat));
+
+    if(rows.length > 3){
+      const rl = document.createElement('div'); rl.className='rest-list';
+      rows.slice(3).forEach((p,i) => {
+        const ri = document.createElement('div'); ri.className='rest-row';
+        const init = p.name.split(/[ ,]/).map(w=>w[0]).slice(0,2).join('');
+        ri.innerHTML = `<span class="rest-rank">${i+4}</span>
+          <div class="rest-avatar" style="background:${cat.color}22;color:${cat.color}">${init||'?'}</div>
+          <div class="rest-info"><div class="rest-name">${p.name} <span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></div><div class="rest-login">${p.login||'—'}</div></div>
+          <span class="rest-score" style="color:${cat.color}">${p.score.toFixed(2)}</span>`;
         rl.appendChild(ri);
-      });sec.appendChild(rl);
+      });
+      sec.appendChild(rl);
     }
     page.appendChild(sec);
   });
-  if(!page.children.length)page.innerHTML='<div class="empty">لا توجد بيانات</div>';
+  if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
 }
 
-function buildPodium(players,cat,winnerCount,type){
+function renderFuture(data){
+  const page = document.getElementById('pageFuture'); page.innerHTML='';
+  if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
+
+  CATS.forEach(cat => {
+    let lvl1 = data.filter(r => r.cat === cat.key && r.level === 1).sort((a,b) => b.score - a.score);
+    let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2).sort((a,b) => b.score - a.score);
+    
+    let futureWinners = [lvl1[0], lvl2[0], lvl1[1]]; 
+    if(!futureWinners.some(Boolean)) return; 
+
+    const sec = document.createElement('div'); sec.className='cat-section';
+    sec.innerHTML = `<div class="cat-label">
+      <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
+      <span class="wnote">${DICT[lang].noteFuture}</span></div>`;
+    
+    sec.appendChild(buildPodium(futureWinners, cat, true));
+    page.appendChild(sec);
+  });
+  if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
+}
+
+function buildPodium(players, cat, isFuture=false){
   const order=[players[1],players[0],players[2]];
   const posC=['p2','p1','p3'],crowns=['🥈','🥇','🥉'],bases=['2','1','3'];
   const wrap=document.createElement('div');wrap.className='podium-wrap';
   order.forEach((p,vi)=>{
-    if(!p)return;
-    const realRank=vi===1?1:vi===0?2:3;
-    const isW=realRank<=winnerCount;
+    if(!p) return;
     const init=p.name.split(/[ ,]/).map(w=>w[0]).slice(0,2).join('');
     const div=document.createElement('div');div.className=`podium-player ${posC[vi]}`;
-    div.innerHTML=`<div class="pod-card"><span class="pod-crown">${crowns[vi]}</span><div class="pod-avatar">${init||'?'}</div><div class="pod-name">${p.name}</div><div class="pod-login">${p.login||'—'}</div>${isW?`<span class="pod-wbadge">🏅 فائز</span>`:''}<div class="pod-score">${p.score.toFixed(2)}</div><div class="pod-score-lbl">نقطة</div></div><div class="pod-base">${bases[vi]}</div>`;
+    div.innerHTML=`<div class="pod-card">
+      <span class="pod-crown">${crowns[vi]}</span>
+      <div class="pod-avatar">${init||'?'}</div>
+      <div class="pod-name">${p.name}</div>
+      <div class="pod-login">${p.login||'—'}</div>
+      <span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span>
+      <div class="pod-score" style="margin-top:5px">${p.score.toFixed(2)}</div>
+      <div class="pod-score-lbl">${DICT[lang].pt}</div>
+    </div><div class="pod-base">${bases[vi]}</div>`;
     wrap.appendChild(div);
   });
   return wrap;
 }
 
-function renderAllTable(data){
-  const page=document.getElementById('pageAll');page.innerHTML='';
-  if(!data.length){page.innerHTML='<div class="empty">لا توجد بيانات</div>';return;}
-  const sorted=data.slice().sort((a,b)=>b.score-a.score);
-  const wrap=document.createElement('div');wrap.className='all-table-wrap';
-  const catLabels={induct:'Induct',stow:'Stow',feeder:'Feeder',pack:'Pack to Buffer'};
-  wrap.innerHTML=`<table><thead><tr><th>#</th><th>الاسم</th><th>Login</th><th>الفئة</th><th>Level</th><th>النقاط</th></tr></thead><tbody>${sorted.map((p,i)=>`<tr><td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td><td style="font-weight:700">${p.name}</td><td style="color:var(--muted);font-size:13px">${p.login||'—'}</td><td>${catLabels[p.cat]||p.cat}</td><td><span class="lvl-badge lvl${p.level}">${p.level===1?'🔴 Level 1':'⚪ Level 2'}</span></td><td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td></tr>`).join('')}</tbody></table>`;
-  page.appendChild(wrap);
-}
-
-// Poll for new data every 10 seconds
 function loadData(){
   const saved=localStorage.getItem('compData');
   if(saved){
@@ -251,7 +313,7 @@ function loadData(){
       const d=JSON.parse(saved);
       if(d&&d.length){
         allData=d;
-        buildDatePills();render();
+        buildDatePills(); render();
         document.getElementById('noDataScreen').style.display='none';
         document.getElementById('app').style.display='block';
       }
@@ -260,7 +322,7 @@ function loadData(){
 }
 
 loadData();
-setInterval(loadData,10000);
+window.addEventListener('storage', (e) => { if (e.key === 'compData') loadData(); });
 </script>
 </body>
 </html>
