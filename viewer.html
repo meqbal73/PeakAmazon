@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Viewer Screen</title>
-<!-- مكتبات Firebase المضافة -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
@@ -17,32 +16,79 @@
   --text:#e8edf5;--muted:#4a5a7a;--green:#22c55e;--red:#ef4444;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-
-/* NO DATA */
+/* شاشة الانتظار */
 #noDataScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:32px;}
-#noDataScreen .big{font-size:64px;}
+#noDataScreen .big{font-size:64px;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.1);opacity:.7;}}
 #noDataScreen h2{font-size:22px;font-weight:900;}
 #noDataScreen p{color:var(--muted);font-size:14px;}
 
+/* العد التنازلي */
+#countdownOverlay{
+  position:fixed; inset:0; z-index:99999;
+  display:none; align-items:center; justify-content:center;
+  background:var(--bg);
+  flex-direction:column; gap:20px;
+}
+#countdownOverlay.show { display:flex; }
+.countdown-number {
+  font-size:180px; font-weight:900; line-height:1;
+  background:linear-gradient(135deg, var(--gold), #ff6b35, var(--gold));
+  background-size:200% 200%;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:countPulse 1s ease-in-out, shimmer 2s linear infinite;
+}
+@keyframes countPulse {
+  0% { transform:scale(0.3); opacity:0; }
+  50% { transform:scale(1.15); opacity:1; }
+  100% { transform:scale(1); opacity:1; }
+}
+@keyframes shimmer {
+  0% { background-position:200% 0; }
+  100% { background-position:-200% 0; }
+}
+.countdown-go {
+  font-size:120px; font-weight:900;
+  animation:goBounce 0.8s cubic-bezier(.17,.67,.35,1.5);
+}
+@keyframes goBounce {
+  0% { transform:scale(0) rotate(-20deg); opacity:0; }
+  60% { transform:scale(1.3) rotate(5deg); opacity:1; }
+  100% { transform:scale(1) rotate(0deg); opacity:1; }
+}
+.countdown-particles {
+  position:absolute; inset:0; overflow:hidden; pointer-events:none;
+}
+.cd-particle {
+  position:absolute; border-radius:50%; opacity:0;
+  animation:particleFly 1s ease-out forwards;
+}
+@keyframes particleFly {
+  0% { transform:translate(0,0) scale(0); opacity:1; }
+  100% { opacity:0; }
+}
+
 /* APP */
-#app{display:none;}
+#app{display:none;animation:fadeUp .6s ease-out;}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(30px);}100%{opacity:1;transform:translateY(0);}}
 .top-bar{background:linear-gradient(180deg,#0d1520 0%,transparent 100%);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
 .logo{display:flex;align-items:center;gap:10px;}
 .logo .ic{font-size:24px;}
 .logo h1{font-size:18px;font-weight:900;}
 .view-badge{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:var(--green);font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;}
 .top-right {display:flex; align-items:center; gap:10px;}
-.lang-btn { background: rgba(255,215,0,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 5px 14px; border-radius: 20px; font-weight: 700; cursor: pointer;}
+.lang-btn { background: rgba(255,215,0,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 5px 14px; border-radius: 20px; font-weight: 700; cursor:pointer;}
 
 .date-row{padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:var(--panel);}
-.dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;}
+.dpill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;}
 .dpill.active{background:var(--accent);border-color:var(--accent);color:white;}
 
 .tabs{display:flex;padding:18px 24px 0;gap:8px;}
-.tab{padding:9px 24px;border-radius:12px 12px 0 0;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);border-bottom:none;background:var(--panel2);color:var(--muted);}
+.tab{padding:9px 24px;border-radius:12px 12px 0 0;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);border-bottom:none;background:var(--panel2);color:var(--muted);transition:all .15s;}
 .tab.active{background:rgba(255,215,0,.08);border-color:var(--gold);color:var(--gold);}
 
 .page{display:none;border-top:2px solid var(--border);padding:24px; border-top-color:var(--gold);}
@@ -52,7 +98,6 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 .formula-strip .ftitle{color:var(--red);font-weight:900;}
 .neg{color:#ef4444;font-weight:700; background:rgba(239,68,68,.1); padding:2px 8px; border-radius:6px;}
 
-/* Category sections & Podium */
 .cat-section{margin-bottom:46px;}
 .cat-label{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .cat-dot{width:10px;height:10px;border-radius:50%;}
@@ -61,7 +106,11 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-left: auto; }
 
 .podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:24px;padding:0 4px;}
-.podium-player{flex:1;max-width:190px;display:flex;flex-direction:column;align-items:center;}
+.podium-player{flex:1;max-width:190px;display:flex;flex-direction:column;align-items:center;animation:podiumRise .6s ease-out both;}
+@keyframes podiumRise{0%{opacity:0;transform:translateY(40px);}100%{opacity:1;transform:translateY(0);}}
+.podium-player:nth-child(1){animation-delay:.1s;}
+.podium-player:nth-child(2){animation-delay:0s;}
+.podium-player:nth-child(3){animation-delay:.2s;}
 .pod-card{width:100%;border-radius:16px 16px 0 0;padding:14px 10px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;}
 .p1 .pod-card{background:linear-gradient(160deg,#2a1f00,#1a1200);border:1px solid #ffd70066;border-bottom:none;}
 .p2 .pod-card{background:linear-gradient(160deg,#1a1f28,#111720);border:1px solid #c0c0c066;border-bottom:none;}
@@ -81,7 +130,6 @@ html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-l
 .p2 .pod-base{height:52px;background:linear-gradient(180deg,#c0c0c0,#808080);color:#000;}
 .p3 .pod-base{height:36px;background:linear-gradient(180deg,#cd7f32,#8b4513);color:#000;}
 
-/* ALL TABLE */
 .all-table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:14px; text-align:right;}
 html[dir="ltr"] table {text-align:left;}
@@ -104,13 +152,16 @@ td{padding:10px 14px;white-space:nowrap;}
 </head>
 <body>
 
-<!-- شاشة العد التنازلي -->
-<div id="countdownOverlay"></div>
+<!-- العد التنازلي -->
+<div id="countdownOverlay">
+  <div class="countdown-particles" id="cdParticles"></div>
+  <div id="cdContent"></div>
+</div>
 
 <div id="noDataScreen">
   <div class="big">⏳</div>
   <h2 class="t-wait-title">في انتظار البيانات</h2>
-  <p class="t-wait-sub">سيظهر هنا تلقائياً بمجرد رفع الإدارة للملف</p>
+  <p class="t-wait-sub">سيظهر هنا تلقائياً بمجرد نشر الإدارة للنتائج</p>
 </div>
 
 <div id="app">
@@ -130,13 +181,13 @@ td{padding:10px 14px;white-space:nowrap;}
     <div id="datePills"></div>
   </div>
 
-  <div class="formula-strip">
+  <div class="formula-strip" id="formulaStrip">
     <span class="ftitle t-calc">🔻 الخصومات:</span>
     <span class="neg">Miss-sort: -50</span>
     <span class="neg">FSAF: -10</span>
   </div>
 
-  <div class="tabs">
+  <div class="tabs" id="tabsRow">
     <div class="tab active t-tab-all" onclick="switchTab('all')">📋 جميع المتسابقين</div>
     <div class="tab t-tab-future" onclick="switchTab('future')">🌟 فائزين فيوتشر</div>
   </div>
@@ -146,7 +197,6 @@ td{padding:10px 14px;white-space:nowrap;}
 </div>
 
 <script>
-// إعدادات Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD0Mnet_aFBNAhidY2cFJ27d4tNTM2F8A8",
   authDomain: "peak-ce9b0.firebaseapp.com",
@@ -159,41 +209,27 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// --- I18N DICTIONARY ---
+// --- I18N ---
 const DICT = {
   ar: {
-    title: 'لوحة <span style="color:var(--gold)">المسابقات</span>',
-    viewLbl: '👁 مشاهدة فقط',
-    waitTitle: 'في انتظار البيانات',
-    waitSub: 'سيظهر هنا تلقائياً بمجرد رفع الإدارة للملف',
-    calc: '🔻 الخصومات:',
-    tabAll: '📋 جميع المتسابقين',
-    tabFuture: '🌟 فائزين فيوتشر',
-    all: 'الكل',
-    empty: 'لا توجد بيانات',
-    pt: 'نقطة',
-    noteAll: '🏅 أعلى 3 مراكز',
-    noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
-    // Table Headers
-    thRank: '#', thName: 'الاسم', thLogin: 'Login', thLevel: 'Level',
-    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'النقاط'
+    title:'لوحة <span style="color:var(--gold)">المسابقات</span>',
+    viewLbl:'👁 مشاهدة فقط', waitTitle:'في انتظار البيانات',
+    waitSub:'سيظهر هنا تلقائياً بمجرد نشر الإدارة للنتائج',
+    calc:'🔻 الخصومات:', tabAll:'📋 جميع المتسابقين', tabFuture:'🌟 فائزين فيوتشر',
+    all:'الكل', empty:'لا توجد بيانات', pt:'نقطة',
+    noteAll:'🏅 أعلى 3 مراكز', noteFuture:'🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
+    thRank:'#', thName:'الاسم', thLogin:'Login', thLevel:'Level',
+    thMiss:'Miss-sort', thFsaf:'FSAF', thPph:'PPH', thTotal:'Total Pkg', thScore:'النقاط'
   },
   en: {
-    title: 'Competitions <span style="color:var(--gold)">Dashboard</span>',
-    viewLbl: '👁 Viewer Only',
-    waitTitle: 'Waiting for Data',
-    waitSub: 'Will appear here automatically once Admin uploads the file',
-    calc: '🔻 Deductions:',
-    tabAll: '📋 All Contestants',
-    tabFuture: '🌟 Future Winners',
-    all: 'All',
-    empty: 'No Data Found',
-    pt: 'pt',
-    noteAll: '🏅 Top 3 Positions',
-    noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
-    // Table Headers
-    thRank: '#', thName: 'Name', thLogin: 'Login', thLevel: 'Level',
-    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'Score'
+    title:'Competitions <span style="color:var(--gold)">Dashboard</span>',
+    viewLbl:'👁 Viewer Only', waitTitle:'Waiting for Data',
+    waitSub:'Will appear here automatically once Admin publishes the results',
+    calc:'🔻 Deductions:', tabAll:'📋 All Contestants', tabFuture:'🌟 Future Winners',
+    all:'All', empty:'No Data Found', pt:'pt',
+    noteAll:'🏅 Top 3 Positions', noteFuture:'🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
+    thRank:'#', thName:'Name', thLogin:'Login', thLevel:'Level',
+    thMiss:'Miss-sort', thFsaf:'FSAF', thPph:'PPH', thTotal:'Total Pkg', thScore:'Score'
   }
 };
 
@@ -228,6 +264,42 @@ const CATS = [
 
 let allData = [], selectedDate = null;
 
+// --- إعدادات العرض (يتم استلامها من الأدمن) ---
+let displaySettings = {
+  hidePodium: false, hideRanks: false, hideScores: false,
+  hideFormula: false, hideFutureTab: false,
+  hideCol_rank: false, hideCol_name: false, hideCol_login: false,
+  hideCol_level: false, hideCol_misssort: false, hideCol_fsaf: false,
+  hideCol_pph: false, hideCol_totalpkg: false, hideCol_score: false,
+  hiddenNames: []
+};
+
+// تطبيق إعدادات العرض على الواجهة
+function applyDisplaySettings() {
+  const s = displaySettings;
+  // إخفاء/إظهار شريط الخصومات
+  document.getElementById('formulaStrip').style.display = s.hideFormula ? 'none' : 'flex';
+  // إخفاء/إظهار تبويب الفائزين
+  const futureTab = document.querySelector('.t-tab-future');
+  if (s.hideFutureTab) {
+    futureTab.style.display = 'none';
+    // إذا كنا في تبويب الفائزين، نرجع للكل
+    if (document.getElementById('pageFuture').classList.contains('active')) {
+      switchTab('all');
+    }
+  } else {
+    futureTab.style.display = '';
+  }
+}
+
+function isNameHidden(name) {
+  return displaySettings.hiddenNames && displaySettings.hiddenNames.includes(name);
+}
+
+function isColHidden(dataKey) {
+  return displaySettings['hideCol_' + dataKey] || false;
+}
+
 function buildDatePills(){
   const dates=[...new Set(allData.map(r=>r.date))].filter(Boolean).sort().reverse();
   selectedDate=dates[0]||null;
@@ -260,7 +332,7 @@ function renderAll(data){
   if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
 
   CATS.forEach(cat => {
-    let rows = data.filter(r => r.cat === cat.key).sort((a,b) => b.score - a.score);
+    let rows = data.filter(r => r.cat === cat.key && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
     if(!rows.length) return;
     
     const top3 = rows.slice(0,3);
@@ -269,34 +341,52 @@ function renderAll(data){
       <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
       <span class="wnote">${DICT[lang].noteAll}</span></div>`;
     
-    sec.appendChild(buildPodium(top3, cat));
+    if (!displaySettings.hidePodium) {
+      sec.appendChild(buildPodium(top3, cat));
+    }
+
+    const colDefs = [
+      { key:'rank', header: DICT[lang].thRank },
+      { key:'name', header: DICT[lang].thName },
+      { key:'login', header: DICT[lang].thLogin },
+      { key:'level', header: DICT[lang].thLevel },
+      { key:'misssort', header: DICT[lang].thMiss },
+      { key:'fsaf', header: DICT[lang].thFsaf },
+      { key:'pph', header: DICT[lang].thPph },
+      { key:'totalpkg', header: DICT[lang].thTotal },
+      { key:'score', header: DICT[lang].thScore },
+    ];
+
+    const visibleCols = colDefs.filter(c => !isColHidden(c.key));
 
     const wrap = document.createElement('div'); wrap.className = 'all-table-wrap';
     wrap.innerHTML = `<table>
-      <thead><tr>
-        <th>${DICT[lang].thRank}</th>
-        <th>${DICT[lang].thName}</th>
-        <th>${DICT[lang].thLogin}</th>
-        <th>${DICT[lang].thLevel}</th>
-        <th>${DICT[lang].thMiss}</th>
-        <th>${DICT[lang].thFsaf}</th>
-        <th>${DICT[lang].thPph}</th>
-        <th>${DICT[lang].thTotal}</th>
-        <th>${DICT[lang].thScore}</th>
-      </tr></thead>
-      <tbody>
-        ${rows.map((p,i) => `<tr>
-          <td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
-          <td style="font-weight:700">${p.name}</td>
-          <td style="color:var(--muted);font-size:13px">${p.login||'—'}</td>
-          <td><span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></td>
-          <td style="color:${p.misssort>0?'var(--red)':'var(--muted)'}">${p.misssort}</td>
-          <td style="color:${p.fsaf>0?'var(--red)':'var(--muted)'}">${p.fsaf}</td>
-          <td>${p.pph}</td>
-          <td>${p.totalpkg}</td>
-          <td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td>
-        </tr>`).join('')}
-      </tbody>
+      <thead><tr>${visibleCols.map(c=>`<th>${c.header}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map((p,i) => {
+        const cells = [];
+        visibleCols.forEach(c => {
+          if(c.key==='rank') {
+            cells.push(`<td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>`);
+          } else if(c.key==='name') {
+            cells.push(`<td style="font-weight:700">${p.name}</td>`);
+          } else if(c.key==='login') {
+            cells.push(`<td style="color:var(--muted);font-size:13px">${p.login||'—'}</td>`);
+          } else if(c.key==='level') {
+            cells.push(`<td><span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></td>`);
+          } else if(c.key==='misssort') {
+            cells.push(`<td style="color:${p.misssort>0?'var(--red)':'var(--muted)'}">${p.misssort}</td>`);
+          } else if(c.key==='fsaf') {
+            cells.push(`<td style="color:${p.fsaf>0?'var(--red)':'var(--muted)'}">${p.fsaf}</td>`);
+          } else if(c.key==='pph') {
+            cells.push(`<td>${p.pph}</td>`);
+          } else if(c.key==='totalpkg') {
+            cells.push(`<td>${p.totalpkg}</td>`);
+          } else if(c.key==='score') {
+            cells.push(`<td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td>`);
+          }
+        });
+        return `<tr>${cells.join('')}</tr>`;
+      }).join('')}</tbody>
     </table>`;
     sec.appendChild(wrap);
     page.appendChild(sec);
@@ -309,8 +399,8 @@ function renderFuture(data){
   if(!data.length){page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;return;}
 
   CATS.forEach(cat => {
-    let lvl1 = data.filter(r => r.cat === cat.key && r.level === 1).sort((a,b) => b.score - a.score);
-    let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2).sort((a,b) => b.score - a.score);
+    let lvl1 = data.filter(r => r.cat === cat.key && r.level === 1 && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
+    let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2 && !isNameHidden(r.name)).sort((a,b) => b.score - a.score);
     
     let futureWinners = [lvl1[0], lvl2[0], lvl1[1]]; 
     
@@ -321,7 +411,9 @@ function renderFuture(data){
       <div class="cat-dot" style="background:${cat.color}"></div><h2>${cat.label}</h2>
       <span class="wnote">${DICT[lang].noteFuture}</span></div>`;
     
-    sec.appendChild(buildPodium(futureWinners, cat, true));
+    if (!displaySettings.hidePodium) {
+      sec.appendChild(buildPodium(futureWinners, cat, true));
+    }
     page.appendChild(sec);
   });
   if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
@@ -341,41 +433,123 @@ function buildPodium(players, cat, isFuture=false){
       <div class="pod-name">${p.name}</div>
       <div class="pod-login">${p.login||'—'}</div>
       <span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span>
-      <div class="pod-score" style="margin-top:5px">${p.score.toFixed(2)}</div>
-      <div class="pod-score-lbl">${DICT[lang].pt}</div>
-    </div><div class="pod-base">${bases[vi]}</div>`;
+      ${!displaySettings.hideScores?`<div class="pod-score" style="margin-top:5px">${p.score.toFixed(2)}</div><div class="pod-score-lbl">${DICT[lang].pt}</div>`:''}
+    </div>${!displaySettings.hideRanks?`<div class="pod-base">${bases[vi]}</div>`:''}`;
     wrap.appendChild(div);
   });
   return wrap;
 }
 
-// الاستماع للبيانات من Firebase بدلاً من LocalStorage
-db.ref('competitionsData').on('value', (snapshot) => {
-    const data = snapshot.val();
-    if(data && data.length > 0) {
-        const overlay = document.getElementById('countdownOverlay');
-        overlay.style.display = 'flex';
-        let count = 3;
-        overlay.innerText = count;
-        
-        const interval = setInterval(() => {
-            count--;
-            if(count > 0) {
-                overlay.innerText = count;
-            } else {
-                clearInterval(interval);
-                overlay.innerText = "GO! 🎉";
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                    allData = data;
-                    buildDatePills(); 
-                    render();
-                    document.getElementById('noDataScreen').style.display = 'none';
-                    document.getElementById('app').style.display = 'block';
-                }, 800);
-            }
-        }, 1000);
+// === تأثير العد التنازلي ===
+function spawnParticles() {
+  const container = document.getElementById('cdParticles');
+  container.innerHTML = '';
+  const colors = ['#ffd700','#ff4d6d','#3b82f6','#22c55e','#f59e0b','#ec4899','#c0c0c0'];
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'cd-particle';
+    const size = Math.random() * 12 + 4;
+    const x = 50 + (Math.random() - 0.5) * 60;
+    const y = 50 + (Math.random() - 0.5) * 60;
+    const dx = (Math.random() - 0.5) * 500;
+    const dy = (Math.random() - 0.5) * 500;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    p.style.cssText = `
+      width:${size}px; height:${size}px; background:${color};
+      left:${x}%; top:${y}%;
+      animation:particleFly 1s ease-out forwards;
+      --dx:${dx}px; --dy:${dy}px;
+    `;
+    // نحتاج تعديل الأنيميشن لكل جزيء
+    p.animate([
+      { transform:'translate(0,0) scale(0)', opacity:1 },
+      { transform:`translate(${dx}px,${dy}px) scale(1)`, opacity:0 }
+    ], { duration: 1000 + Math.random()*500, easing:'ease-out', fill:'forwards' });
+    container.appendChild(p);
+  }
+}
+
+function showCountdown(callback) {
+  const overlay = document.getElementById('countdownOverlay');
+  const content = document.getElementById('cdContent');
+  overlay.classList.add('show');
+  let count = 3;
+  
+  function showNumber() {
+    if (count > 0) {
+      content.innerHTML = `<div class="countdown-number">${count}</div>`;
+      spawnParticles();
+      count--;
+      setTimeout(showNumber, 1000);
+    } else {
+      content.innerHTML = `<div class="countdown-go">GO! 🎉</div>`;
+      spawnParticles();
+      setTimeout(() => {
+        overlay.classList.remove('show');
+        callback();
+      }, 1000);
     }
+  }
+  showNumber();
+}
+
+// === الاستماع من Firebase ===
+let hasShownData = false;
+
+// الاستماع لإعدادات العرض (يتم تحميلها أولاً)
+db.ref('displaySettings').on('value', (snap) => {
+  if (snap.val()) {
+    displaySettings = snap.val();
+    if (!displaySettings.hiddenNames) displaySettings.hiddenNames = [];
+    // إذا كانت البيانات موجودة بالفعل، نعيد تطبيق الإعدادات
+    if (hasShownData) {
+      applyDisplaySettings();
+      render();
+    }
+  }
+});
+
+// الاستماع للبيانات — العد التنازلي يظهر فقط عند النشر
+db.ref('competitionsData').on('value', (snapshot) => {
+  const data = snapshot.val();
+  if(data && data.length > 0) {
+    // نتحقق مما إذا كان هذا نشر جديد عبر مراقبة published
+    db.ref('published').once('value', (pubSnap) => {
+      const isPublished = pubSnap.val() === true;
+      
+      if (isPublished && !hasShownData) {
+        // أول نشر — نعرض العد التنازلي
+        showCountdown(() => {
+          allData = data;
+          hasShownData = true;
+          applyDisplaySettings();
+          buildDatePills();
+          render();
+          document.getElementById('noDataScreen').style.display = 'none';
+          document.getElementById('app').style.display = 'block';
+        });
+        // إعادة تعيين علامة النشر
+        db.ref('published').set(false);
+      } else if (hasShownData) {
+        // تحديث بيانات بدون عد تنازلي
+        allData = data;
+        applyDisplaySettings();
+        buildDatePills();
+        render();
+        document.getElementById('noDataScreen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+      } else {
+        // بيانات موجودة لكن لم يُنشر بعد — نظهرها بدون عد
+        allData = data;
+        hasShownData = true;
+        applyDisplaySettings();
+        buildDatePills();
+        render();
+        document.getElementById('noDataScreen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+      }
+    });
+  }
 });
 </script>
 </body>
