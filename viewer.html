@@ -43,19 +43,19 @@ html[dir="ltr"] body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-se
 .page{display:none;border-top:2px solid var(--border);padding:24px; border-top-color:var(--gold);}
 .page.active{display:block;}
 
-.formula-strip{margin:0 24px 18px;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:10px 16px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px;}
-.formula-strip .ftitle{color:var(--muted);font-weight:700;}
-.neg{color:#ef4444;font-weight:700;}.pos{color:#22c55e;font-weight:700;}.base{color:var(--gold);font-weight:700;}
+.formula-strip{margin:0 24px 18px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 16px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px;}
+.formula-strip .ftitle{color:var(--red);font-weight:900;}
+.neg{color:#ef4444;font-weight:700; background:rgba(239,68,68,.1); padding:2px 8px; border-radius:6px;}
 
 /* Category sections & Podium */
-.cat-section{margin-bottom:36px;}
+.cat-section{margin-bottom:46px;}
 .cat-label{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .cat-dot{width:10px;height:10px;border-radius:50%;}
 .cat-label h2{font-size:17px;font-weight:900;}
 .wnote{font-size:12px;padding:3px 12px;border-radius:20px;font-weight:700;background:rgba(255,215,0,.1);color:var(--gold);border:1px solid var(--gold);}
 html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-left: auto; }
 
-.podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:16px;padding:0 4px;}
+.podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:24px;padding:0 4px;}
 .podium-player{flex:1;max-width:190px;display:flex;flex-direction:column;align-items:center;}
 .pod-card{width:100%;border-radius:16px 16px 0 0;padding:14px 10px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;}
 .p1 .pod-card{background:linear-gradient(160deg,#2a1f00,#1a1200);border:1px solid #ffd70066;border-bottom:none;}
@@ -76,14 +76,17 @@ html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-l
 .p2 .pod-base{height:52px;background:linear-gradient(180deg,#c0c0c0,#808080);color:#000;}
 .p3 .pod-base{height:36px;background:linear-gradient(180deg,#cd7f32,#8b4513);color:#000;}
 
-.rest-list{display:flex;flex-direction:column;gap:5px;}
-.rest-row{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:9px 14px;}
-.rest-rank{font-size:13px;font-weight:700;color:var(--muted);min-width:22px;text-align:center;}
-.rest-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
-.rest-info{flex:1;}
-.rest-name{font-size:13px;font-weight:700;}
-.rest-login{font-size:11px;color:var(--muted);}
-.rest-score{font-size:14px;font-weight:900;}
+/* ALL TABLE */
+.all-table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:14px; text-align:right;}
+html[dir="ltr"] table {text-align:left;}
+thead tr{background:var(--panel2);border-bottom:2px solid var(--border);}
+thead th{padding:10px 14px;font-weight:700;color:var(--muted);font-size:12px;white-space:nowrap;}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .12s;}
+tbody tr:hover{background:rgba(255,255,255,.03);}
+td{padding:10px 14px;white-space:nowrap;}
+.rank-td{font-weight:900;font-size:15px;text-align:center;}
+.score-td{font-weight:900;font-size:15px;}
 .lvl-badge {font-size:9px; padding:2px 6px; border-radius:6px; margin-top:3px; display:inline-block;}
 .lvl1 {background:rgba(255,77,109,.15); color:var(--future); border:1px solid var(--future);}
 .lvl2 {background:rgba(96,165,250,.15); color:var(--regular); border:1px solid var(--regular);}
@@ -120,12 +123,9 @@ html[dir="rtl"] .wnote { margin-right: auto; } html[dir="ltr"] .wnote { margin-l
   </div>
 
   <div class="formula-strip">
-    <span class="ftitle t-calc">⚙️ الحسبة:</span>
-    <span class="base">100 Base</span>
-    <span class="neg">Miss-sort × −50</span>
-    <span class="neg">FSAF × −10</span>
-    <span class="pos">PPH × 0.1</span>
-    <span class="pos">Total Pkg × 0.02</span>
+    <span class="ftitle t-calc">🔻 الخصومات:</span>
+    <span class="neg">Miss-sort: -50</span>
+    <span class="neg">FSAF: -10</span>
   </div>
 
   <div class="tabs">
@@ -145,28 +145,34 @@ const DICT = {
     viewLbl: '👁 مشاهدة فقط',
     waitTitle: 'في انتظار البيانات',
     waitSub: 'سيظهر هنا تلقائياً بمجرد رفع الإدارة للملف',
-    calc: '⚙️ الحسبة:',
+    calc: '🔻 الخصومات:',
     tabAll: '📋 جميع المتسابقين',
     tabFuture: '🌟 فائزين فيوتشر',
     all: 'الكل',
     empty: 'لا توجد بيانات',
     pt: 'نقطة',
     noteAll: '🏅 أعلى 3 مراكز',
-    noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)'
+    noteFuture: '🏅 أعلى 2 (Lvl 1) + أعلى 1 (Lvl 2)',
+    // Table Headers
+    thRank: '#', thName: 'الاسم', thLogin: 'Login', thLevel: 'Level',
+    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'النقاط'
   },
   en: {
     title: 'Competitions <span style="color:var(--gold)">Dashboard</span>',
     viewLbl: '👁 Viewer Only',
     waitTitle: 'Waiting for Data',
     waitSub: 'Will appear here automatically once Admin uploads the file',
-    calc: '⚙️ Formula:',
+    calc: '🔻 Deductions:',
     tabAll: '📋 All Contestants',
     tabFuture: '🌟 Future Winners',
     all: 'All',
     empty: 'No Data Found',
     pt: 'pt',
     noteAll: '🏅 Top 3 Positions',
-    noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)'
+    noteFuture: '🏅 Top 2 (Lvl 1) + Top 1 (Lvl 2)',
+    // Table Headers
+    thRank: '#', thName: 'Name', thLogin: 'Login', thLevel: 'Level',
+    thMiss: 'Miss-sort', thFsaf: 'FSAF', thPph: 'PPH', thTotal: 'Total Pkg', thScore: 'Score'
   }
 };
 
@@ -244,19 +250,34 @@ function renderAll(data){
     
     sec.appendChild(buildPodium(top3, cat));
 
-    if(rows.length > 3){
-      const rl = document.createElement('div'); rl.className='rest-list';
-      rows.slice(3).forEach((p,i) => {
-        const ri = document.createElement('div'); ri.className='rest-row';
-        const init = p.name.split(/[ ,]/).map(w=>w[0]).slice(0,2).join('');
-        ri.innerHTML = `<span class="rest-rank">${i+4}</span>
-          <div class="rest-avatar" style="background:${cat.color}22;color:${cat.color}">${init||'?'}</div>
-          <div class="rest-info"><div class="rest-name">${p.name} <span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></div><div class="rest-login">${p.login||'—'}</div></div>
-          <span class="rest-score" style="color:${cat.color}">${p.score.toFixed(2)}</span>`;
-        rl.appendChild(ri);
-      });
-      sec.appendChild(rl);
-    }
+    const wrap = document.createElement('div'); wrap.className = 'all-table-wrap';
+    wrap.innerHTML = `<table>
+      <thead><tr>
+        <th>${DICT[lang].thRank}</th>
+        <th>${DICT[lang].thName}</th>
+        <th>${DICT[lang].thLogin}</th>
+        <th>${DICT[lang].thLevel}</th>
+        <th>${DICT[lang].thMiss}</th>
+        <th>${DICT[lang].thFsaf}</th>
+        <th>${DICT[lang].thPph}</th>
+        <th>${DICT[lang].thTotal}</th>
+        <th>${DICT[lang].thScore}</th>
+      </tr></thead>
+      <tbody>
+        ${rows.map((p,i) => `<tr>
+          <td class="rank-td">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
+          <td style="font-weight:700">${p.name}</td>
+          <td style="color:var(--muted);font-size:13px">${p.login||'—'}</td>
+          <td><span class="lvl-badge ${p.level===1?'lvl1':'lvl2'}">Lvl ${p.level}</span></td>
+          <td style="color:${p.misssort>0?'var(--red)':'var(--muted)'}">${p.misssort}</td>
+          <td style="color:${p.fsaf>0?'var(--red)':'var(--muted)'}">${p.fsaf}</td>
+          <td>${p.pph}</td>
+          <td>${p.totalpkg}</td>
+          <td class="score-td" style="color:${p.score>=100?'var(--green)':'var(--red)'}">${p.score.toFixed(2)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+    sec.appendChild(wrap);
     page.appendChild(sec);
   });
   if(!page.children.length) page.innerHTML=`<div class="empty">${DICT[lang].empty}</div>`;
@@ -271,6 +292,7 @@ function renderFuture(data){
     let lvl2 = data.filter(r => r.cat === cat.key && r.level === 2).sort((a,b) => b.score - a.score);
     
     let futureWinners = [lvl1[0], lvl2[0], lvl1[1]]; 
+    
     if(!futureWinners.some(Boolean)) return; 
 
     const sec = document.createElement('div'); sec.className='cat-section';
